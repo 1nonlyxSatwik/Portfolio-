@@ -41,60 +41,35 @@
     "Segoe UI Emoji";
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-  --radius: 1.25rem;
+  --radius: 1.5rem;
 
-  --background: 0 0% 100%;
-  --foreground: 240 10% 4%;
-  --border: 240 6% 90%;
-  --card: 0 0% 100%;
-  --card-foreground: 240 10% 4%;
-  --card-border: 240 6% 90%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 240 10% 4%;
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --card-border: 240 3.7% 15.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
 
-  --primary: 240 10% 4%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 240 6% 96%;
-  --secondary-foreground: 240 10% 4%;
-  --muted: 240 6% 96%;
-  --muted-foreground: 240 4% 46%;
-  --accent: 16 90% 56%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 240 5.9% 10%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --accent: 18 92% 54%;
   --accent-foreground: 0 0% 98%;
 
-  --destructive: 0 84% 60%;
+  --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 0 0% 98%;
 
-  --input: 240 6% 90%;
-  --ring: 16 90% 56%;
+  --input: 240 3.7% 15.9%;
+  --ring: 18 92% 54%;
 
   --primary-border: var(--primary);
   --accent-border: var(--accent);
 
-  --elevate-1: rgba(0, 0, 0, 0.03);
-  --elevate-2: rgba(0, 0, 0, 0.08);
-}
-
-.dark {
-  --background: 240 10% 6%;
-  --foreground: 0 0% 98%;
-  --card: 240 10% 7%;
-  --card-foreground: 0 0% 98%;
-  --popover: 240 10% 7%;
-  --popover-foreground: 0 0% 98%;
-  --border: 240 8% 24%;
-  --card-border: 240 8% 22%;
-  --primary: 0 0% 98%;
-  --primary-foreground: 240 10% 8%;
-  --secondary: 240 10% 10%;
-  --secondary-foreground: 0 0% 98%;
-  --muted: 240 10% 10%;
-  --muted-foreground: 240 6% 72%;
-  --accent: 18 92% 54%;
-  --accent-foreground: 0 0% 98%;
-  --destructive: 0 70% 50%;
-  --destructive-foreground: 0 0% 98%;
-  --input: 240 8% 24%;
-  --ring: 18 92% 54%;
   --elevate-1: rgba(255, 255, 255, 0.04);
   --elevate-2: rgba(255, 255, 255, 0.09);
 }
@@ -105,51 +80,43 @@
   }
   html {
     color-scheme: dark;
+    scroll-behavior: smooth;
   }
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased bg-background text-foreground selection:bg-accent/30 selection:text-white;
+    background-color: hsl(240 10% 4%);
+    background-image: 
+      radial-gradient(circle at 20% 20%, hsl(240 10% 8%) 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, hsl(240 10% 6%) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, hsl(240 10% 5%) 0%, transparent 60%);
   }
 }
 
 @layer utilities {
   .glass {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    box-shadow:
-      0 0 0 1px rgba(0, 0, 0, 0.25) inset,
-      0 1px 0 rgba(255, 255, 255, 0.06) inset,
-      0 24px 70px rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(22px) saturate(140%);
-    -webkit-backdrop-filter: blur(22px) saturate(140%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 0.5px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 
+      0 8px 32px 0 rgba(0, 0, 0, 0.8),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.02),
+      inset 0 1px 1px 0 rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
   }
 
   .glass-card {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    box-shadow:
-      0 0 0 1px rgba(0, 0, 0, 0.25) inset,
-      0 1px 0 rgba(255, 255, 255, 0.06) inset,
-      0 24px 70px rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(22px) saturate(140%);
-    -webkit-backdrop-filter: blur(22px) saturate(140%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+    border: 0.5px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 
+      0 4px 24px -1px rgba(0, 0, 0, 0.5),
+      inset 0 1px 1px 0 rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
     border-radius: 1.5rem;
   }
 
-  .glass-refraction {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .glass-refraction::before {
-    content: "";
-    position: absolute;
-    inset: -40% -20%;
-    background:
-      radial-gradient(700px 380px at 30% 20%, rgba(255, 255, 255, 0.10), transparent 55%),
-      radial-gradient(520px 260px at 70% 80%, rgba(255, 255, 255, 0.06), transparent 55%);
-    opacity: 0.9;
-    pointer-events: none;
-    transform: translate3d(0, 0, 0);
+  .glass-highlight {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, transparent 100%);
   }
 
   .grain::after {
@@ -157,20 +124,17 @@
     pointer-events: none;
     position: absolute;
     inset: 0;
-    background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.035;
     mix-blend-mode: overlay;
-    opacity: 0.075;
-  }
-
-  .focus-ring {
-    outline: none;
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.12),
-      0 0 0 6px hsl(var(--ring) / 0.18);
+    border-radius: inherit;
   }
 
   .text-balance {
     text-wrap: balance;
+  }
+
+  .mask-radial {
+    mask-image: radial-gradient(circle at center, black, transparent 80%);
   }
 }
