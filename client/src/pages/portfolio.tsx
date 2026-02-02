@@ -6,7 +6,6 @@ import {
   useReducedMotion,
   useSpring,
   useMotionValue,
-  AnimatePresence,
 } from "framer-motion";
 import {
   ArrowUpRight,
@@ -50,7 +49,7 @@ const fadeSlide: Variants = {
   }),
 };
 
-function GridSquare({ index }: { index: number }) {
+function GridSquare() {
   const [visible, setVisible] = useState(false);
   
   useEffect(() => {
@@ -83,7 +82,7 @@ function AmbientBackground() {
     <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden mask-radial">
       <div className="absolute inset-0 grid grid-cols-6 sm:grid-cols-12 grid-rows-12 gap-4 p-4 opacity-40">
         {Array.from({ length: 72 }).map((_, i) => (
-          <GridSquare key={i} index={i} />
+          <GridSquare key={i} />
         ))}
       </div>
       <div 
@@ -115,11 +114,13 @@ function CursorHighlight() {
     <motion.div
       className="fixed inset-0 pointer-events-none z-50 mix-blend-soft-light"
       style={{
-        background: useMemo(() => `radial-gradient(600px circle at var(--x) var(--y), rgba(255, 255, 255, 0.06), transparent 80%)`, []),
-      }}
+        maskImage: `radial-gradient(300px circle at var(--x) var(--y), black, transparent)`,
+        WebkitMaskImage: `radial-gradient(300px circle at var(--x) var(--y), black, transparent)`,
+      } as any}
       animate={{
-        WebkitMaskImage: `radial-gradient(300px circle at ${springX}px ${springY}px, black, transparent)`,
-      }}
+        "--x": `${springX.get()}px`,
+        "--y": `${springY.get()}px`,
+      } as any}
     >
       <motion.div 
         className="absolute inset-0 bg-white/5 opacity-20"
@@ -241,7 +242,7 @@ export default function Portfolio() {
       <AmbientBackground />
       {!reduceMotion && <CursorHighlight />}
 
-      <header className="fixed top-0 left-0 right-0 z-50 px-6 py-6 pointer-events-none">
+      <header className="fixed top-0 left-0 right-0 z-40 px-6 py-6 pointer-events-none">
         <nav className="mx-auto max-w-6xl flex justify-between items-center pointer-events-auto">
           <div className="glass px-4 py-2 rounded-full flex items-center gap-3 grain">
             <Sparkles className="h-4 w-4 text-accent" />
@@ -327,7 +328,7 @@ export default function Portfolio() {
 
           <Section id="projects" eyebrow="The Artifacts" title="Selected Projects" index={1}>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {projects.map((p, idx) => (
+              {projects.map((p) => (
                 <motion.article
                   key={p.id}
                   data-testid={`card-project-${p.id}`}
