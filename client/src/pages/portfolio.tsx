@@ -64,7 +64,7 @@ function GridSquare() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ 
-        opacity: visible ? [0.03, 0.08, 0.03] : 0,
+        opacity: visible ? [0.03, 0.12, 0.03] : 0,
         scale: visible ? [1, 1.05, 1] : 1
       }}
       transition={{ 
@@ -72,7 +72,7 @@ function GridSquare() {
         repeat: Infinity, 
         ease: "easeInOut" 
       }}
-      className="h-full w-full rounded-lg bg-white/10 ring-1 ring-white/5"
+      className="h-full w-full rounded-lg bg-accent/20 ring-1 ring-accent/10"
     />
   );
 }
@@ -88,7 +88,7 @@ function AmbientBackground() {
       <div 
         className="absolute inset-0"
         style={{
-          background: "radial-gradient(circle at 50% 50%, transparent 0%, hsl(240 10% 3.9%) 90%)"
+          background: "radial-gradient(circle at 50% 50%, transparent 0%, #020202 90%)"
         }}
       />
     </div>
@@ -123,7 +123,7 @@ function CursorHighlight() {
       } as any}
     >
       <motion.div 
-        className="absolute inset-0 bg-white/5 opacity-20"
+        className="absolute inset-0 bg-accent/10 opacity-30"
         style={{
           x: springX,
           y: springY,
@@ -136,6 +136,29 @@ function CursorHighlight() {
         }}
       />
     </motion.div>
+  );
+}
+
+function AnimatedRevealText({ text }: { text: string }) {
+  const words = text.split(" ");
+  return (
+    <div className="overflow-hidden flex flex-wrap justify-center">
+      {words.map((word, i) => (
+        <motion.span
+          key={i}
+          initial={{ y: "100%", opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            duration: 1,
+            delay: i * 0.15,
+            ease: [0.16, 1, 0.3, 1],
+          }}
+          className="inline-block mr-4 last:mr-0 text-accent text-glow-orange font-bold italic"
+        >
+          {word}
+        </motion.span>
+      ))}
+    </div>
   );
 }
 
@@ -166,18 +189,18 @@ function Section({
       <div className="relative z-10">
         <div
           data-testid={`text-eyebrow-${id}`}
-          className="mb-4 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-white/40"
+          className="mb-4 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.3em] text-accent"
         >
-          <span className="h-1 w-1 rounded-full bg-accent" />
+          <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(255,68,0,0.6)]" />
           <span>{eyebrow}</span>
         </div>
         <h2
           data-testid={`text-title-${id}`}
-          className="text-balance text-3xl font-medium tracking-tight text-white/90 sm:text-4xl"
+          className="text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl"
         >
           {title}
         </h2>
-        <div className="mt-8 text-[16px] leading-relaxed text-white/60 font-light tracking-wide">
+        <div className="mt-8 text-[16px] leading-relaxed text-white/70 font-light tracking-wide">
           {children}
         </div>
       </div>
@@ -238,22 +261,22 @@ export default function Portfolio() {
   ];
 
   return (
-    <div className="dark min-h-screen bg-transparent selection:bg-accent/30">
+    <div className="dark min-h-screen bg-transparent selection:bg-accent/40 selection:text-white">
       <AmbientBackground />
       {!reduceMotion && <CursorHighlight />}
 
-      <header className="fixed top-0 left-0 right-0 z-40 px-6 py-6 pointer-events-none">
+      <header className="fixed top-0 left-0 right-0 z-50 px-6 py-6 pointer-events-none">
         <nav className="mx-auto max-w-6xl flex justify-between items-center pointer-events-auto">
-          <div className="glass px-4 py-2 rounded-full flex items-center gap-3 grain">
+          <div className="glass px-4 py-2 rounded-full flex items-center gap-3 grain ring-1 ring-accent/20">
             <Sparkles className="h-4 w-4 text-accent" />
-            <span className="text-sm font-medium tracking-tight text-white/90">Your Portfolio</span>
+            <span className="text-sm font-bold tracking-tight text-white">Your Portfolio</span>
           </div>
-          <div className="hidden sm:flex glass px-2 py-1.5 rounded-full items-center gap-1 grain">
+          <div className="hidden sm:flex glass px-2 py-1.5 rounded-full items-center gap-1 grain ring-1 ring-accent/10">
             {["About", "Projects", "Journey", "Contact"].map((item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
-                className="px-4 py-1.5 text-[12px] font-medium text-white/50 hover:text-white transition-colors rounded-full hover:bg-white/5"
+                className="px-4 py-1.5 text-[12px] font-bold uppercase tracking-wider text-white/50 hover:text-accent transition-colors rounded-full hover:bg-accent/5"
               >
                 {item}
               </a>
@@ -261,7 +284,7 @@ export default function Portfolio() {
           </div>
           <a
             href="#contact"
-            className="glass px-5 py-2 rounded-full text-xs font-semibold text-white/90 grain hover:bg-white/10 transition-colors"
+            className="glass px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest text-white hover:text-accent hover:ring-accent/40 transition-all ring-1 ring-white/10"
           >
             Hire Me
           </a>
@@ -274,38 +297,38 @@ export default function Portfolio() {
           className="relative mx-auto flex min-h-[70vh] max-w-6xl flex-col items-center justify-center px-6 text-center"
         >
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.5, ease: fadeEase }}
             className="relative"
           >
-            <div className="mb-8 inline-flex items-center gap-2 rounded-full glass grain px-4 py-2 text-[11px] font-semibold uppercase tracking-widest text-white/50">
-              <span className="h-1 w-1 rounded-full bg-accent animate-pulse" />
-              Building for the spatial web
+            <div className="mb-10 inline-flex items-center gap-3 rounded-full glass grain px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-accent ring-1 ring-accent/30 shadow-[0_0_20px_rgba(255,68,0,0.1)]">
+              <span className="h-2 w-2 rounded-full bg-accent animate-pulse shadow-[0_0_10px_rgba(255,68,0,1)]" />
+              Available for high-impact work
             </div>
 
-            <h1 className="text-balance text-5xl font-medium tracking-tight text-white sm:text-7xl lg:text-8xl">
+            <h1 className="text-balance text-6xl font-black tracking-tighter text-white sm:text-8xl lg:text-9xl mb-6">
               I Build Digital <br />
-              <span className="text-white/40">Experiences</span>
+              <AnimatedRevealText text="Experiences" />
             </h1>
 
-            <p className="mx-auto mt-10 max-w-2xl text-balance text-lg font-light leading-relaxed text-white/50 sm:text-xl">
-              Focusing on material depth, intentional motion, and the quiet 
-              confidence of premium interface design.
+            <p className="mx-auto mt-12 max-w-2xl text-balance text-xl font-light leading-relaxed text-white/60 sm:text-2xl tracking-wide">
+              Forging the future of <span className="text-white font-medium">spatial interfaces</span> with 
+              material depth and visceral motion.
             </p>
 
-            <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <div className="mt-16 flex flex-col items-center justify-center gap-6 sm:flex-row">
               <motion.a
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.05, y: -4, boxShadow: "0 20px 40px rgba(255, 68, 0, 0.2)" }}
+                whileTap={{ scale: 0.95 }}
                 href="#projects"
-                className="glass grain px-8 py-4 rounded-full text-sm font-semibold text-white shadow-2xl hover:bg-white/10 transition-colors"
+                className="glass grain px-10 py-5 rounded-full text-sm font-black uppercase tracking-widest text-white ring-2 ring-accent/50 bg-accent/10 shadow-[0_0_30px_rgba(255,68,0,0.1)] hover:bg-accent/20 transition-all"
               >
-                Explore Selected Work
+                View Artifacts
               </motion.a>
               <a
                 href="#contact"
-                className="px-8 py-4 text-sm font-medium text-white/50 hover:text-white transition-colors"
+                className="px-10 py-5 text-sm font-bold uppercase tracking-widest text-white/40 hover:text-accent transition-all"
               >
                 Get in Touch
               </a>
@@ -313,68 +336,68 @@ export default function Portfolio() {
           </motion.div>
         </section>
 
-        <div className="mx-auto max-w-6xl px-6 pb-32">
-          <Section id="about" eyebrow="The Philosophy" title="Material Realism" index={0}>
-            <p className="mb-6">
-              I believe software should feel tactile. By leveraging physical properties 
-              like refraction, depth, and mass, we can create interfaces that are not 
-              just functional, but deeply resonant.
+        <div className="mx-auto max-w-6xl px-6 pb-40">
+          <Section id="about" eyebrow="The Core" title="Visceral Engineering" index={0}>
+            <p className="mb-8 text-lg">
+              I don't just build UI; I craft digital materials. By pushing the boundaries 
+              of <span className="text-accent font-medium italic">refraction, lighting, and mass</span>, I create 
+              experiences that feel like they exist in physical space.
             </p>
-            <p>
-              My process balances technical precision with aesthetic intuition, 
-              resulting in systems that feel "crafted" rather than simply assembled.
+            <p className="text-white/50">
+              Every pixel is intentional. Every motion is physics-driven. The result is 
+              software that commands attention through its sheer quality and craft.
             </p>
           </Section>
 
-          <Section id="projects" eyebrow="The Artifacts" title="Selected Projects" index={1}>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <Section id="projects" eyebrow="The Output" title="Selected Artifacts" index={1}>
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {projects.map((p) => (
                 <motion.article
                   key={p.id}
                   data-testid={`card-project-${p.id}`}
-                  className="glass-card grain group relative flex flex-col p-6 h-full"
+                  className="glass-card grain group relative flex flex-col p-8 h-full ring-1 ring-white/5 hover:ring-accent/40 transition-all"
                   whileHover={{ 
-                    y: -8,
-                    scale: 1.01,
-                    transition: { type: "spring", stiffness: 300, damping: 20 }
+                    y: -12,
+                    scale: 1.02,
+                    transition: { type: "spring", stiffness: 400, damping: 25 }
                   }}
                 >
                   <div className="relative z-10">
-                    <div className="flex justify-between items-start mb-4">
-                      <h3 className="text-lg font-medium text-white/90">{p.title}</h3>
-                      <ArrowUpRight className="h-4 w-4 text-white/30 group-hover:text-accent transition-colors" />
+                    <div className="flex justify-between items-start mb-6">
+                      <h3 className="text-xl font-bold tracking-tight text-white">{p.title}</h3>
+                      <ArrowUpRight className="h-5 w-5 text-white/20 group-hover:text-accent transition-colors" />
                     </div>
-                    <p className="text-sm text-white/50 mb-6 leading-relaxed">
+                    <p className="text-[15px] text-white/50 mb-8 leading-relaxed">
                       {p.description}
                     </p>
-                    <div className="mt-auto flex flex-wrap gap-2">
+                    <div className="mt-auto flex flex-wrap gap-3">
                       {p.tags.map((t) => (
-                        <span key={t} className="text-[10px] font-bold uppercase tracking-widest text-white/30">
+                        <span key={t} className="text-[10px] font-black uppercase tracking-[0.2em] text-accent/60">
                           {t}
                         </span>
                       ))}
                     </div>
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl" />
                 </motion.article>
               ))}
             </div>
           </Section>
 
-          <Section id="journey" eyebrow="The Path" title="Experience" index={2}>
-            <div className="space-y-4">
+          <Section id="journey" eyebrow="The Path" title="Trajectory" index={2}>
+            <div className="space-y-6">
               {journey.map((j) => (
-                <div key={j.id} className="glass-card grain p-8 flex flex-col sm:flex-row gap-6 items-start">
+                <div key={j.id} className="glass-card grain p-10 flex flex-col sm:flex-row gap-8 items-start ring-1 ring-white/5 hover:ring-accent/20 transition-all">
                   <div className="flex-1">
-                    <h3 className="text-lg font-medium text-white/90">{j.title}</h3>
-                    <div className="text-accent text-xs font-bold uppercase tracking-widest mt-1">
+                    <h3 className="text-xl font-bold text-white">{j.title}</h3>
+                    <div className="text-accent text-xs font-black uppercase tracking-[0.3em] mt-2">
                       {j.org}
                     </div>
-                    <p className="mt-4 text-sm text-white/50 leading-relaxed max-w-2xl">
+                    <p className="mt-6 text-[15px] text-white/60 leading-relaxed max-w-3xl">
                       {j.description}
                     </p>
                   </div>
-                  <div className="text-[10px] font-mono text-white/30 uppercase pt-1">
+                  <div className="text-[11px] font-mono text-white/30 font-bold uppercase pt-1 tracking-widest">
                     {j.period}
                   </div>
                 </div>
@@ -382,42 +405,51 @@ export default function Portfolio() {
             </div>
           </Section>
 
-          <Section id="contact" eyebrow="The Connection" title="Start a Conversation" index={3}>
-            <div className="grid gap-12 lg:grid-cols-2">
+          <Section id="contact" eyebrow="The Nexus" title="Collaborate" index={3}>
+            <div className="grid gap-16 lg:grid-cols-2">
               <div>
-                <p className="text-lg text-white/60 mb-8 font-light">
-                  Currently available for select partnerships and 
-                  high-impact design engineering roles.
+                <p className="text-2xl text-white/80 mb-10 font-light leading-snug">
+                  Seeking <span className="text-accent italic font-medium">elite partnerships</span> for 
+                  visionary digital products.
                 </p>
-                <div className="space-y-4">
-                  <a href="mailto:hello@example.com" className="flex items-center gap-4 text-white/80 hover:text-white transition-colors">
-                    <div className="glass p-3 rounded-full"><Mail className="h-4 w-4" /></div>
-                    <span className="text-sm font-medium">hello@example.com</span>
+                <div className="space-y-6">
+                  <a href="mailto:hello@example.com" className="group flex items-center gap-5 text-white/80 hover:text-accent transition-all">
+                    <div className="glass p-4 rounded-full ring-1 ring-white/10 group-hover:ring-accent/40 shadow-xl"><Mail className="h-5 w-5" /></div>
+                    <span className="text-base font-bold tracking-wide">hello@example.com</span>
                   </a>
-                  <div className="flex items-center gap-4 text-white/40">
-                    <div className="glass p-3 rounded-full opacity-50"><MapPin className="h-4 w-4" /></div>
-                    <span className="text-sm font-medium">Remote / Global</span>
+                  <div className="flex items-center gap-5 text-white/30">
+                    <div className="glass p-4 rounded-full opacity-50 ring-1 ring-white/5"><MapPin className="h-5 w-5" /></div>
+                    <span className="text-base font-medium">Global / Remote</span>
                   </div>
                 </div>
               </div>
               
-              <div className="glass-card grain p-8">
-                <form className="space-y-4">
-                  <input 
-                    placeholder="Name" 
-                    className="w-full glass bg-white/5 px-6 py-4 rounded-2xl text-sm text-white placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-accent/50 transition-all"
-                  />
-                  <input 
-                    placeholder="Email" 
-                    className="w-full glass bg-white/5 px-6 py-4 rounded-2xl text-sm text-white placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-accent/50 transition-all"
-                  />
-                  <textarea 
-                    placeholder="Project Details" 
-                    rows={4}
-                    className="w-full glass bg-white/5 px-6 py-4 rounded-2xl text-sm text-white placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-accent/50 transition-all resize-none"
-                  />
-                  <button className="w-full glass bg-white/10 py-4 rounded-2xl text-sm font-bold uppercase tracking-widest text-white hover:bg-white/20 transition-all">
-                    Send Inquiry
+              <div className="glass-card grain p-10 ring-1 ring-accent/20 shadow-2xl">
+                <form className="space-y-6">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-white/30 ml-2">Name</label>
+                    <input 
+                      placeholder="Your name" 
+                      className="w-full glass bg-white/5 px-6 py-5 rounded-2xl text-sm text-white placeholder:text-white/10 focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all ring-1 ring-white/5"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-white/30 ml-2">Email</label>
+                    <input 
+                      placeholder="Your email" 
+                      className="w-full glass bg-white/5 px-6 py-5 rounded-2xl text-sm text-white placeholder:text-white/10 focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all ring-1 ring-white/5"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-white/30 ml-2">Brief</label>
+                    <textarea 
+                      placeholder="What are we building?" 
+                      rows={4}
+                      className="w-full glass bg-white/5 px-6 py-5 rounded-2xl text-sm text-white placeholder:text-white/10 focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all ring-1 ring-white/5 resize-none"
+                    />
+                  </div>
+                  <button className="w-full glass bg-accent/20 py-5 rounded-2xl text-xs font-black uppercase tracking-[0.3em] text-white hover:bg-accent/30 hover:shadow-[0_0_30px_rgba(255,68,0,0.2)] transition-all ring-1 ring-accent/50">
+                    Initiate Connection
                   </button>
                 </form>
               </div>
@@ -426,15 +458,15 @@ export default function Portfolio() {
         </div>
       </main>
 
-      <footer className="px-6 py-12 border-t border-white/5 bg-black/20">
-        <div className="mx-auto max-w-6xl flex flex-col sm:flex-row justify-between items-center gap-6">
-          <div className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/20">
-            © 2026 Crafted by Your Name
+      <footer className="px-6 py-16 border-t border-accent/10 bg-black/40">
+        <div className="mx-auto max-w-6xl flex flex-col sm:flex-row justify-between items-center gap-10">
+          <div className="text-[11px] font-black uppercase tracking-[0.5em] text-white/10">
+            © 2026 forged by your name
           </div>
-          <div className="flex gap-8">
-            <a href="#" className="text-[10px] font-bold uppercase tracking-widest text-white/20 hover:text-white transition-colors">GitHub</a>
-            <a href="#" className="text-[10px] font-bold uppercase tracking-widest text-white/20 hover:text-white transition-colors">LinkedIn</a>
-            <a href="#" className="text-[10px] font-bold uppercase tracking-widest text-white/20 hover:text-white transition-colors">Twitter</a>
+          <div className="flex gap-12">
+            <a href="#" className="text-[11px] font-black uppercase tracking-[0.2em] text-white/20 hover:text-accent transition-all">GitHub</a>
+            <a href="#" className="text-[11px] font-black uppercase tracking-[0.2em] text-white/20 hover:text-accent transition-all">LinkedIn</a>
+            <a href="#" className="text-[11px] font-black uppercase tracking-[0.2em] text-white/20 hover:text-accent transition-all">Twitter</a>
           </div>
         </div>
       </footer>
