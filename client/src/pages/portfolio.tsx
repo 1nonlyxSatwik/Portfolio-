@@ -17,7 +17,6 @@ import {
   MapPin,
   Sparkles,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 type Project = {
   id: string;
@@ -51,6 +50,57 @@ const fadeSlide: Variants = {
   }),
 };
 
+function RotatingCube() {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none scale-150 sm:scale-100">
+      <motion.div
+        className="relative w-64 h-64"
+        animate={{
+          rotateY: [0, 360],
+          rotateX: [0, 360],
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+        style={{ transformStyle: "preserve-3d" }}
+      >
+        {/* Front */}
+        <div
+          className="absolute inset-0 border-2 border-white/20 bg-white/5"
+          style={{ transform: "translateZ(128px)", backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)", backgroundSize: "16px 16px" }}
+        />
+        {/* Back */}
+        <div
+          className="absolute inset-0 border-2 border-white/20 bg-white/5"
+          style={{ transform: "rotateY(180deg) translateZ(128px)", backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)", backgroundSize: "16px 16px" }}
+        />
+        {/* Right */}
+        <div
+          className="absolute inset-0 border-2 border-white/20 bg-white/5"
+          style={{ transform: "rotateY(90deg) translateZ(128px)", backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)", backgroundSize: "16px 16px" }}
+        />
+        {/* Left */}
+        <div
+          className="absolute inset-0 border-2 border-white/20 bg-white/5"
+          style={{ transform: "rotateY(-90deg) translateZ(128px)", backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)", backgroundSize: "16px 16px" }}
+        />
+        {/* Top */}
+        <div
+          className="absolute inset-0 border-2 border-white/20 bg-white/5"
+          style={{ transform: "rotateX(90deg) translateZ(128px)", backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)", backgroundSize: "16px 16px" }}
+        />
+        {/* Bottom */}
+        <div
+          className="absolute inset-0 border-2 border-white/20 bg-white/5"
+          style={{ transform: "rotateX(-90deg) translateZ(128px)", backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)", backgroundSize: "16px 16px" }}
+        />
+      </motion.div>
+    </div>
+  );
+}
+
 function AmbientGrid() {
   const { scrollYProgress } = useScroll();
   const yRange = useTransform(scrollYProgress, [0, 1], [0, -40]);
@@ -72,6 +122,7 @@ function AmbientGrid() {
       className="fixed inset-0 -z-20 pointer-events-none overflow-hidden bg-[#050505]"
       style={{ opacity: opacityRange }}
     >
+      <RotatingCube />
       <motion.div 
         className="absolute inset-0 w-full h-full"
         style={{ y: yRange }}
