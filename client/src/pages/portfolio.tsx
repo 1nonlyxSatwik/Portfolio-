@@ -213,29 +213,29 @@ export default function Portfolio() {
 
   const projects: Project[] = [
     {
-      id: "aurora",
-      title: "Aurora Notes",
+      id: "ecommerce",
+      title: "Modern E-commerce Platform",
       description:
-        "A spatial writing environment focusing on material depth and typography-led hierarchy.",
-      tags: ["Design Engineering", "React", "Motion"],
+        "A full-stack commerce experience focused on clean architecture and high-performance UI systems.",
+      tags: ["Full-stack", "UI Engineering", "Performance"],
       href: "#",
       repo: "#",
     },
     {
-      id: "atlas",
-      title: "Atlas Dashboard",
+      id: "univ-info",
+      title: "University Information Website",
       description:
-        "Premium data surface with micro-refractions and intent-based navigation.",
-      tags: ["UI Systems", "Data Viz", "Motion"],
+        "A structured informational portal built with intentional design and clear typography.",
+      tags: ["Information Design", "Web Systems", "Typography"],
       href: "#",
       repo: "#",
     },
     {
-      id: "flux",
-      title: "Flux Gallery",
+      id: "animation-ui",
+      title: "Animation-Driven UI Systems",
       description:
-        "Experimental commerce surface exploring glass-on-glass material interactions.",
-      tags: ["Experimental", "GLSL", "UX"],
+        "Experimental UI components exploring tactile feedback and spatial motion transitions.",
+      tags: ["Motion Design", "React", "Spatial Web"],
       href: "#",
       repo: "#",
     },
@@ -243,20 +243,20 @@ export default function Portfolio() {
 
   const journey: JourneyItem[] = [
     {
-      id: "now",
-      title: "Senior Design Engineer",
-      org: "Independent",
-      period: "2025–Present",
+      id: "nst",
+      title: "Computer Science Student",
+      org: "Newton School of Technology",
+      period: "2-year Student",
       description:
-        "Crafting high-fidelity interfaces that prioritize spatial awareness and material realism.",
+        "Focused on full-stack development, data structures, and the engineering of intentional user experiences.",
     },
     {
-      id: "prev",
-      title: "Product Engineer",
-      org: "Stellar Systems",
-      period: "2023–2025",
+      id: "projects",
+      title: "Independent Developer",
+      org: "Freelance / Open Source",
+      period: "Present",
       description:
-        "Architected core design systems with a focus on motion-driven feedback and glass surfaces.",
+        "Developing real-world applications with a priority on quality over quantity and designs that age well.",
     },
   ];
 
@@ -269,7 +269,7 @@ export default function Portfolio() {
         <nav className="mx-auto max-w-6xl flex justify-between items-center pointer-events-auto">
           <div className="glass px-4 py-2 rounded-full flex items-center gap-3 grain ring-1 ring-accent/20">
             <Sparkles className="h-4 w-4 text-accent" />
-            <span className="text-sm font-bold tracking-tight text-white">Your Portfolio</span>
+            <span className="text-sm font-bold tracking-tight text-white">Satwik Mani Tripathi</span>
           </div>
           <div className="hidden sm:flex glass px-2 py-1.5 rounded-full items-center gap-1 grain ring-1 ring-accent/10">
             {["About", "Projects", "Journey", "Contact"].map((item) => (
@@ -286,7 +286,7 @@ export default function Portfolio() {
             href="#contact"
             className="glass px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest text-white hover:text-accent hover:ring-accent/40 transition-all ring-1 ring-white/10"
           >
-            Hire Me
+            Connect
           </a>
         </nav>
       </header>
@@ -304,7 +304,7 @@ export default function Portfolio() {
           >
             <div className="mb-10 inline-flex items-center gap-3 rounded-full glass grain px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-accent ring-1 ring-accent/30 shadow-[0_0_20px_rgba(255,68,0,0.1)]">
               <span className="h-2 w-2 rounded-full bg-accent animate-pulse shadow-[0_0_10px_rgba(255,68,0,1)]" />
-              Available for high-impact work
+              Newton School of Technology
             </div>
 
             <h1 className="text-balance text-6xl font-black tracking-tighter text-white sm:text-8xl lg:text-9xl mb-6">
@@ -312,9 +312,9 @@ export default function Portfolio() {
               <AnimatedRevealText text="Experiences" />
             </h1>
 
-            <p className="mx-auto mt-12 max-w-2xl text-balance text-xl font-light leading-relaxed text-white/60 sm:text-2xl tracking-wide">
-              Forging the future of <span className="text-white font-medium">spatial interfaces</span> with 
-              material depth and visceral motion.
+            <p className="mx-auto mt-12 max-w-3xl text-balance text-xl font-light leading-relaxed text-white/60 sm:text-2xl tracking-wide">
+              Forging <span className="text-white font-medium">clean, intentional</span> web applications 
+              where typography, spacing, and motion create calm, premium experiences.
             </p>
 
             <div className="mt-16 flex flex-col items-center justify-center gap-6 sm:flex-row">
@@ -337,15 +337,19 @@ export default function Portfolio() {
         </section>
 
         <div className="mx-auto max-w-6xl px-6 pb-40">
-          <Section id="about" eyebrow="The Core" title="Visceral Engineering" index={0}>
+          <Section id="about" eyebrow="The Identity" title="Clean. Structured. Intentional." index={0}>
             <p className="mb-8 text-lg">
-              I don't just build UI; I craft digital materials. By pushing the boundaries 
-              of <span className="text-accent font-medium italic">refraction, lighting, and mass</span>, I create 
-              experiences that feel like they exist in physical space.
+              I’m <span className="text-white font-medium">Satwik Mani Tripathi</span>, a second-year Computer Science student 
+              at Newton School of Technology. I care deeply about how interfaces <span className="text-accent italic font-medium">feel</span>—not just how they function.
+            </p>
+            <p className="text-white/70 mb-6">
+              I prefer clarity over complexity and quality over quantity. My work is focused on 
+              full-stack development and data structures, but always through the lens of 
+              creating design decisions that age well.
             </p>
             <p className="text-white/50">
-              Every pixel is intentional. Every motion is physics-driven. The result is 
-              software that commands attention through its sheer quality and craft.
+              I spend my time obsessing over typography, spacing, and the quiet precision of 
+              motion-driven UI systems to build products that command respect.
             </p>
           </Section>
 
@@ -415,11 +419,11 @@ export default function Portfolio() {
                 <div className="space-y-6">
                   <a href="mailto:hello@example.com" className="group flex items-center gap-5 text-white/80 hover:text-accent transition-all">
                     <div className="glass p-4 rounded-full ring-1 ring-white/10 group-hover:ring-accent/40 shadow-xl"><Mail className="h-5 w-5" /></div>
-                    <span className="text-base font-bold tracking-wide">hello@example.com</span>
+                    <span className="text-base font-bold tracking-wide">satwikmani@example.com</span>
                   </a>
                   <div className="flex items-center gap-5 text-white/30">
                     <div className="glass p-4 rounded-full opacity-50 ring-1 ring-white/5"><MapPin className="h-5 w-5" /></div>
-                    <span className="text-base font-medium">Global / Remote</span>
+                    <span className="text-base font-medium">NST / Remote</span>
                   </div>
                 </div>
               </div>
@@ -461,7 +465,7 @@ export default function Portfolio() {
       <footer className="px-6 py-16 border-t border-accent/10 bg-black/40">
         <div className="mx-auto max-w-6xl flex flex-col sm:flex-row justify-between items-center gap-10">
           <div className="text-[11px] font-black uppercase tracking-[0.5em] text-white/10">
-            © 2026 forged by your name
+            © 2026 forged by Satwik Mani Tripathi
           </div>
           <div className="flex gap-12">
             <a href="#" className="text-[11px] font-black uppercase tracking-[0.2em] text-white/20 hover:text-accent transition-all">GitHub</a>
