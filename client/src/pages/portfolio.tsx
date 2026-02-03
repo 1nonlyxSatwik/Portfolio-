@@ -6,6 +6,8 @@ import {
   useReducedMotion,
   useSpring,
   useMotionValue,
+  useScroll,
+  useTransform,
 } from "framer-motion";
 import {
   ArrowUpRight,
@@ -49,49 +51,57 @@ const fadeSlide: Variants = {
   }),
 };
 
-function GridSquare() {
-  const [visible, setVisible] = useState(false);
+function AmbientGrid() {
+  const { scrollYProgress } = useScroll();
+  const yRange = useTransform(scrollYProgress, [0, 1], [0, -40]);
+  const opacityRange = useTransform(scrollYProgress, [0, 0.5, 1], [0.4, 0.6, 0.4]);
   
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setVisible(true);
-    }, Math.random() * 2000);
-    
-    return () => clearTimeout(timeout);
+  const gridItems = useMemo(() => {
+    return Array.from({ length: 48 }).map((_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      duration: 20 + Math.random() * 20,
+      delay: Math.random() * -20,
+      size: 4 + Math.random() * 12,
+    }));
   }, []);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ 
-        opacity: visible ? [0.03, 0.12, 0.03] : 0,
-        scale: visible ? [1, 1.05, 1] : 1
-      }}
-      transition={{ 
-        duration: 8 + Math.random() * 10, 
-        repeat: Infinity, 
-        ease: "easeInOut" 
-      }}
-      className="h-full w-full rounded-lg bg-accent/20 ring-1 ring-accent/10"
-    />
-  );
-}
-
-function AmbientBackground() {
-  return (
-    <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden mask-radial">
-      <div className="absolute inset-0 grid grid-cols-6 sm:grid-cols-12 grid-rows-12 gap-4 p-4 opacity-40">
-        {Array.from({ length: 72 }).map((_, i) => (
-          <GridSquare key={i} />
+    <motion.div 
+      className="fixed inset-0 -z-20 pointer-events-none overflow-hidden bg-[#050505]"
+      style={{ opacity: opacityRange }}
+    >
+      <motion.div 
+        className="absolute inset-0 w-full h-full"
+        style={{ y: yRange }}
+      >
+        {gridItems.map((item) => (
+          <motion.div
+            key={item.id}
+            className="absolute rounded-sm bg-white/[0.03] ring-1 ring-white/[0.02]"
+            style={{
+              left: `${item.x}%`,
+              top: `${item.y}%`,
+              width: item.size,
+              height: item.size,
+            }}
+            animate={{
+              x: [0, 15, -15, 0],
+              y: [0, -20, 20, 0],
+              opacity: [0.02, 0.08, 0.02],
+            }}
+            transition={{
+              duration: item.duration,
+              delay: item.delay,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
         ))}
-      </div>
-      <div 
-        className="absolute inset-0"
-        style={{
-          background: "radial-gradient(circle at 50% 50%, transparent 0%, #020202 90%)"
-        }}
-      />
-    </div>
+      </motion.div>
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/40 to-[#050505]" />
+    </motion.div>
   );
 }
 
@@ -262,7 +272,7 @@ export default function Portfolio() {
 
   return (
     <div className="dark min-h-screen bg-transparent selection:bg-accent/40 selection:text-white">
-      <AmbientBackground />
+      <AmbientGrid />
       {!reduceMotion && <CursorHighlight />}
 
       <header className="fixed top-0 left-0 right-0 z-50 px-6 py-6 pointer-events-none">
