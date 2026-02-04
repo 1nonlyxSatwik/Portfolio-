@@ -317,11 +317,14 @@ function Section({
       id={id}
       data-testid={`section-${id}`}
       className="glass-card grain group relative mx-auto w-full max-w-5xl px-8 py-12 sm:px-12 sm:py-16 mb-12"
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.15 }}
-      variants={fadeSlide}
-      custom={index}
+      initial={{ opacity: 0, y: 100 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.1 }}
+      transition={{
+        duration: 1.2,
+        delay: 0.1,
+        ease: [0.16, 1, 0.3, 1],
+      }}
     >
       <div className="relative z-10">
         <div
