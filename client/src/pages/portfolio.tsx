@@ -356,6 +356,64 @@ function Section({
   );
 }
 
+function SpotlightSection() {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const springX = useSpring(mouseX, { stiffness: 100, damping: 30 });
+  const springY = useSpring(mouseY, { stiffness: 100, damping: 30 });
+
+  function handleMouseMove(e: React.MouseEvent) {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
+  }
+
+  const spotlightStyle = {
+    maskImage: useTransform(
+      [springX, springY],
+      ([x, y]) => `radial-gradient(400px circle at ${x}px ${y}px, black 0%, transparent 100%)`
+    ),
+    WebkitMaskImage: useTransform(
+      [springX, springY],
+      ([x, y]) => `radial-gradient(400px circle at ${x}px ${y}px, black 0%, transparent 100%)`
+    ),
+  };
+
+  return (
+    <section 
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      className="py-32 relative flex flex-col items-center justify-center text-center overflow-hidden cursor-none"
+    >
+      {/* Dim Base Layer */}
+      <div className="pointer-events-none select-none opacity-20">
+        <h2 className="text-[12vw] font-black leading-none tracking-tighter text-white/10">
+          SELECTED WORK
+        </h2>
+        <h2 className="text-[10vw] font-black leading-none tracking-tighter text-white/10 -mt-10">
+          SYSTEMS BUILT TO SCALE
+        </h2>
+      </div>
+
+      {/* Spotlight Highlight Layer */}
+      <motion.div
+        style={spotlightStyle}
+        className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none select-none z-10"
+      >
+        <h2 className="text-[12vw] font-black leading-none tracking-tighter text-white">
+          SELECTED WORK
+        </h2>
+        <h2 className="text-[10vw] font-black leading-none tracking-tighter text-accent -mt-10">
+          SYSTEMS BUILT TO SCALE
+        </h2>
+      </motion.div>
+    </section>
+  );
+}
+
 export default function Portfolio() {
   const reduceMotion = useReducedMotion();
 
@@ -527,21 +585,7 @@ export default function Portfolio() {
             </p>
           </Section>
 
-          <section className="py-32 flex flex-col items-center justify-center text-center overflow-hidden">
-             <motion.div
-               initial={{ opacity: 0, scale: 0.9 }}
-               whileInView={{ opacity: 1, scale: 1 }}
-               transition={{ duration: 1.5 }}
-               className="pointer-events-none select-none"
-             >
-               <h2 className="text-[12vw] font-black leading-none tracking-tighter text-white/5">
-                 SELECTED WORK
-               </h2>
-               <h2 className="text-[10vw] font-black leading-none tracking-tighter text-accent/10 -mt-10">
-                 SYSTEMS BUILT TO SCALE
-               </h2>
-             </motion.div>
-          </section>
+          <SpotlightSection />
 
           <Section id="projects" eyebrow="The Output" title="Selected Artifacts" index={1}>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
