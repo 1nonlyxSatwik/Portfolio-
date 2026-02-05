@@ -95,8 +95,15 @@ function CursorTrail() {
 }
 
 function FloatingCube() {
+  const { scrollY } = useScroll();
+  const rotateSpeed = useTransform(scrollY, [0, 1000], [10, 60]);
+  const opacity = useTransform(scrollY, [0, 500, 1000], [0.7, 0.4, 0]);
+
   return (
-    <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10 opacity-70">
+    <motion.div 
+      className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10"
+      style={{ opacity }}
+    >
       <motion.div
         animate={{
           rotateY: [0, 360],
@@ -104,7 +111,7 @@ function FloatingCube() {
           y: [-20, 20, -20],
         }}
         transition={{
-          duration: 10,
+          duration: 15, // Slower base speed
           repeat: Infinity,
           ease: "linear",
         }}
@@ -379,28 +386,28 @@ export default function Portfolio() {
   const projects: Project[] = [
     {
       id: "ecommerce",
-      title: "Modern E-commerce Platform",
+      title: "Production E-commerce",
       description:
-        "A full-stack commerce experience focused on clean architecture and high-performance UI systems.",
-      tags: ["Full-stack", "UI Engineering", "Performance"],
+        "Engineered a high-performance commerce system handling 5k+ concurrent users with sub-200ms API response times.",
+      tags: ["Auth", "API Caching", "DB Schema", "Redis"],
       href: "#",
       repo: "#",
     },
     {
       id: "univ-info",
-      title: "University Information Website",
+      title: "University Data Portal",
       description:
-        "A structured informational portal built with intentional design and clear typography.",
-      tags: ["Information Design", "Web Systems", "Typography"],
+        "Architected a structured information system with optimized complex queries and 40% improvement in load times.",
+      tags: ["PostgreSQL", "Query Optimization", "Next.js"],
       href: "#",
       repo: "#",
     },
     {
       id: "animation-ui",
-      title: "Animation-Driven UI Systems",
+      title: "System Design Lab",
       description:
-        "Experimental UI components exploring tactile feedback and spatial motion transitions.",
-      tags: ["Motion Design", "React", "Spatial Web"],
+        "Building a suite of modular, performance-first UI components for scalable enterprise applications.",
+      tags: ["TypeScript", "Design Systems", "Web Vitals"],
       href: "#",
       repo: "#",
     },
@@ -474,14 +481,14 @@ export default function Portfolio() {
               Newton School of Technology
             </div>
 
-            <h1 className="text-balance text-6xl font-black tracking-tighter text-white sm:text-8xl lg:text-9xl mb-6">
-              I Build Digital <br />
-              <AnimatedRevealText text="Experiences" />
+            <h1 className="text-balance text-6xl font-black tracking-tighter text-white sm:text-8xl lg:text-9xl mb-8">
+              I Build High-Performance <br />
+              <AnimatedRevealText text="Engineering Systems" />
             </h1>
 
-            <p className="mx-auto mt-12 max-w-3xl text-balance text-xl font-light leading-relaxed text-white/60 sm:text-2xl tracking-wide">
-              Forging <span className="text-white font-medium">clean, intentional</span> web applications 
-              where typography, spacing, and motion create calm, premium experiences.
+            <p className="mx-auto mt-8 max-w-3xl text-balance text-xl font-light leading-relaxed text-white/60 sm:text-2xl tracking-wide">
+              I build <span className="text-white font-medium">fast, scalable web products</span> with 
+              calm design and production-grade engineering.
             </p>
 
             <div className="mt-16 flex flex-col items-center justify-center gap-6 sm:flex-row">
@@ -519,6 +526,22 @@ export default function Portfolio() {
               motion-driven UI systems to build products that command respect.
             </p>
           </Section>
+
+          <section className="py-32 flex flex-col items-center justify-center text-center overflow-hidden">
+             <motion.div
+               initial={{ opacity: 0, scale: 0.9 }}
+               whileInView={{ opacity: 1, scale: 1 }}
+               transition={{ duration: 1.5 }}
+               className="pointer-events-none select-none"
+             >
+               <h2 className="text-[12vw] font-black leading-none tracking-tighter text-white/5">
+                 SELECTED WORK
+               </h2>
+               <h2 className="text-[10vw] font-black leading-none tracking-tighter text-accent/10 -mt-10">
+                 SYSTEMS BUILT TO SCALE
+               </h2>
+             </motion.div>
+          </section>
 
           <Section id="projects" eyebrow="The Output" title="Selected Artifacts" index={1}>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -629,15 +652,24 @@ export default function Portfolio() {
         </div>
       </main>
 
-      <footer className="px-6 py-16 border-t border-accent/10 bg-black/40">
-        <div className="mx-auto max-w-6xl flex flex-col sm:flex-row justify-between items-center gap-10">
-          <div className="text-[11px] font-black uppercase tracking-[0.5em] text-white/10">
-            © 2026 forged by Satwik Mani Tripathi
+      <footer className="px-6 py-24 border-t border-accent/10 bg-black/40 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+           <RotatingCube />
+        </div>
+        <div className="mx-auto max-w-6xl flex flex-col items-center gap-12 text-center relative z-10">
+          <div className="space-y-4">
+             <h2 className="text-4xl font-black text-white">Let’s build something that matters.</h2>
+             <p className="text-white/40 font-light tracking-widest uppercase text-xs">Based in NST • Available Globally</p>
           </div>
+          
           <div className="flex gap-12">
             <a href="#" className="text-[11px] font-black uppercase tracking-[0.2em] text-white/20 hover:text-accent transition-all">GitHub</a>
             <a href="#" className="text-[11px] font-black uppercase tracking-[0.2em] text-white/20 hover:text-accent transition-all">LinkedIn</a>
             <a href="#" className="text-[11px] font-black uppercase tracking-[0.2em] text-white/20 hover:text-accent transition-all">Twitter</a>
+          </div>
+          
+          <div className="text-[11px] font-black uppercase tracking-[0.5em] text-white/5">
+            © 2026 forged by Satwik Mani Tripathi
           </div>
         </div>
       </footer>
