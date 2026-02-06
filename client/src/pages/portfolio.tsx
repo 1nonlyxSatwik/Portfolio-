@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Lenis from "lenis";
+import { Link, useLocation } from "wouter";
 import {
   type Transition,
   type Variants,
@@ -9,6 +10,7 @@ import {
   useMotionValue,
   useScroll,
   useTransform,
+  AnimatePresence,
 } from "framer-motion";
 import {
   ArrowUpRight,
@@ -17,16 +19,45 @@ import {
   Mail,
   MapPin,
   Sparkles,
+  Instagram,
+  Linkedin,
+  ChevronLeft,
 } from "lucide-react";
 
 type Project = {
   id: string;
   title: string;
   description: string;
+  longDescription: string;
+  architecture: string[];
+  metrics: string[];
   tags: string[];
-  href?: string;
+  liveUrl: string;
   repo?: string;
 };
+
+const projectsData: Project[] = [
+  {
+    id: "satkart",
+    title: "SatKart — Modern E-commerce",
+    description: "Full-stack commerce system handling 5k+ concurrent users with sub-200ms API response times.",
+    longDescription: "SatKart is a production-grade e-commerce platform built for scale. It features a sophisticated architecture leveraging Prisma ORM for type-safe database operations, Redis for high-speed caching, and a robust authentication system. The platform handles the entire commerce lifecycle from product discovery to protected cart management, coupon logic, and a seamless checkout flow.",
+    architecture: ["Prisma ORM", "Redis Caching", "JWT Auth", "Node.js API", "React/Tailwind"],
+    metrics: ["5k+ Concurrent Users", "Sub-200ms Response", "40% Load Time Improvement"],
+    tags: ["Full-stack", "E-commerce", "System Design"],
+    liveUrl: "https://satkart-commerce.vercel.app",
+  },
+  {
+    id: "edusity",
+    title: "Edusity — Learning Platform",
+    description: "Educational platform with real-time feedback, streaks, and infinite-scroll UI architecture.",
+    longDescription: "Edusity focuses on the intersection of pedagogy and performance. It delivers a fluid learning experience with instant quiz feedback, daily streak tracking, and a highly responsive infinite-carousel interface. Built as a high-fidelity frontend masterpiece, it demonstrates complex state management and animation-driven UI systems without compromising on accessibility.",
+    architecture: ["React", "Framer Motion", "Tailwind CSS", "Infinite Scroll Engine", "Local State Store"],
+    metrics: ["100/100 Lighthouse Performance", "Instant Feedback Engine", "Zero Jitter UI"],
+    tags: ["Frontend Engineering", "EdTech", "UX Architecture"],
+    liveUrl: "https://edusity-platform.vercel.app",
+  },
+];
 
 type JourneyItem = {
   id: string;
@@ -50,6 +81,82 @@ const fadeSlide: Variants = {
     },
   }),
 };
+
+function ProjectDetail({ id, onClose }: { id: string; onClose: () => void }) {
+  const project = projectsData.find((p) => p.id === id);
+  if (!project) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 100 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className="fixed inset-0 z-[60] glass-card m-4 sm:m-8 overflow-y-auto p-8 sm:p-16 grain"
+    >
+      <button
+        onClick={onClose}
+        className="mb-12 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-white/40 hover:text-accent transition-colors"
+      >
+        <ChevronLeft className="h-4 w-4" />
+        Back to Portfolio
+      </button>
+
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-12">
+          <div className="text-accent text-xs font-black uppercase tracking-[0.3em] mb-4">
+            System Analysis — {project.id}
+          </div>
+          <h1 className="text-5xl sm:text-7xl font-black text-white tracking-tighter mb-8 leading-none">
+            {project.title}
+          </h1>
+          <p className="text-xl text-white/60 font-light leading-relaxed mb-12">
+            {project.longDescription}
+          </p>
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-12 mb-16">
+          <div className="space-y-6">
+            <h3 className="text-xs font-black uppercase tracking-widest text-white/30 border-b border-white/5 pb-2">Core Architecture</h3>
+            <div className="flex flex-wrap gap-3">
+              {project.architecture.map((tech) => (
+                <span key={tech} className="glass px-4 py-2 rounded-full text-xs font-bold text-white/80">{tech}</span>
+              ))}
+            </div>
+          </div>
+          <div className="space-y-6">
+            <h3 className="text-xs font-black uppercase tracking-widest text-white/30 border-b border-white/5 pb-2">Engineering Metrics</h3>
+            <div className="space-y-4">
+              {project.metrics.map((metric) => (
+                <div key={metric} className="flex items-center gap-3">
+                  <div className="h-1 w-1 rounded-full bg-accent" />
+                  <span className="text-sm font-medium text-white/70">{metric}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-6 border-t border-white/5 pt-12">
+          <a
+            href={project.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="glass bg-accent/20 px-10 py-5 rounded-full text-sm font-black uppercase tracking-widest text-white ring-1 ring-accent/50 hover:bg-accent/30 transition-all text-center"
+          >
+            Visit Live Site
+          </a>
+          <button
+            onClick={onClose}
+            className="px-10 py-5 rounded-full text-sm font-bold uppercase tracking-widest text-white/40 hover:text-white transition-all text-center"
+          >
+            Close Detail
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 function CursorTrail() {
   const [points, setPoints] = useState<{ x: number; y: number; id: number }[]>([]);
@@ -96,7 +203,6 @@ function CursorTrail() {
 
 function FloatingCube() {
   const { scrollY } = useScroll();
-  const rotateSpeed = useTransform(scrollY, [0, 1000], [10, 60]);
   const opacity = useTransform(scrollY, [0, 500, 1000], [0.7, 0.4, 0]);
 
   return (
@@ -111,7 +217,7 @@ function FloatingCube() {
           y: [-20, 20, -20],
         }}
         transition={{
-          duration: 15, // Slower base speed
+          duration: 15,
           repeat: Infinity,
           ease: "linear",
         }}
@@ -206,7 +312,6 @@ function AmbientGrid() {
       className="fixed inset-0 -z-20 pointer-events-none overflow-hidden bg-[#050505]"
       style={{ opacity: opacityRange }}
     >
-      <RotatingCube />
       <motion.div 
         className="absolute inset-0 w-full h-full"
         style={{ y: yRange }}
@@ -388,7 +493,6 @@ function SpotlightSection() {
       onMouseMove={handleMouseMove}
       className="py-32 relative flex flex-col items-center justify-center text-center overflow-hidden cursor-none"
     >
-      {/* Dim Base Layer */}
       <div className="pointer-events-none select-none opacity-20">
         <h2 className="text-[12vw] font-black leading-none tracking-tighter text-white/10">
           SELECTED WORK
@@ -398,7 +502,6 @@ function SpotlightSection() {
         </h2>
       </div>
 
-      {/* Spotlight Highlight Layer */}
       <motion.div
         style={spotlightStyle}
         className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none select-none z-10"
@@ -416,6 +519,7 @@ function SpotlightSection() {
 
 export default function Portfolio() {
   const reduceMotion = useReducedMotion();
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -440,36 +544,6 @@ export default function Portfolio() {
       lenis.destroy();
     };
   }, []);
-
-  const projects: Project[] = [
-    {
-      id: "ecommerce",
-      title: "Production E-commerce",
-      description:
-        "Engineered a high-performance commerce system handling 5k+ concurrent users with sub-200ms API response times.",
-      tags: ["Auth", "API Caching", "DB Schema", "Redis"],
-      href: "#",
-      repo: "#",
-    },
-    {
-      id: "univ-info",
-      title: "University Data Portal",
-      description:
-        "Architected a structured information system with optimized complex queries and 40% improvement in load times.",
-      tags: ["PostgreSQL", "Query Optimization", "Next.js"],
-      href: "#",
-      repo: "#",
-    },
-    {
-      id: "animation-ui",
-      title: "System Design Lab",
-      description:
-        "Building a suite of modular, performance-first UI components for scalable enterprise applications.",
-      tags: ["TypeScript", "Design Systems", "Web Vitals"],
-      href: "#",
-      repo: "#",
-    },
-  ];
 
   const journey: JourneyItem[] = [
     {
@@ -496,6 +570,15 @@ export default function Portfolio() {
       <FloatingCube />
       <CursorTrail />
       {!reduceMotion && <CursorHighlight />}
+
+      <AnimatePresence>
+        {selectedProjectId && (
+          <ProjectDetail 
+            id={selectedProjectId} 
+            onClose={() => setSelectedProjectId(null)} 
+          />
+        )}
+      </AnimatePresence>
 
       <header className="fixed top-0 left-0 right-0 z-50 px-6 py-6 pointer-events-none">
         <nav className="mx-auto max-w-6xl flex justify-between items-center pointer-events-auto">
@@ -589,11 +672,12 @@ export default function Portfolio() {
 
           <Section id="projects" eyebrow="The Output" title="Selected Artifacts" index={1}>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {projects.map((p) => (
+              {projectsData.map((p) => (
                 <motion.article
                   key={p.id}
                   data-testid={`card-project-${p.id}`}
-                  className="glass-card grain group relative flex flex-col p-8 h-full ring-1 ring-white/5 hover:ring-accent/40 transition-all"
+                  className="glass-card grain group relative flex flex-col p-8 h-full ring-1 ring-white/5 hover:ring-accent/40 transition-all cursor-pointer"
+                  onClick={() => setSelectedProjectId(p.id)}
                   whileHover={{ 
                     y: -12,
                     scale: 1.02,
@@ -651,22 +735,24 @@ export default function Portfolio() {
                   visionary digital products.
                 </p>
                 <div className="space-y-6">
-                  <a href="mailto:hello@example.com" className="group flex items-center gap-5 text-white/80 hover:text-accent transition-all">
+                  <a href="mailto:satwikmani@example.com" className="group flex items-center gap-5 text-white/80 hover:text-accent transition-all">
                     <div className="glass p-4 rounded-full ring-1 ring-white/10 group-hover:ring-accent/40 shadow-xl"><Mail className="h-5 w-5" /></div>
                     <span className="text-base font-bold tracking-wide">satwikmani@example.com</span>
                   </a>
-                  <div className="flex items-center gap-5 text-white/30">
-                    <div className="glass p-4 rounded-full opacity-50 ring-1 ring-white/5"><MapPin className="h-5 w-5" /></div>
-                    <span className="text-base font-medium">NST / Remote</span>
+                  <div className="flex gap-4 mt-8">
+                     <a href="https://instagram.com" target="_blank" className="glass p-4 rounded-full hover:text-accent transition-all"><Instagram className="h-5 w-5" /></a>
+                     <a href="https://linkedin.com" target="_blank" className="glass p-4 rounded-full hover:text-accent transition-all"><Linkedin className="h-5 w-5" /></a>
+                     <a href="https://github.com" target="_blank" className="glass p-4 rounded-full hover:text-accent transition-all"><Github className="h-5 w-5" /></a>
                   </div>
                 </div>
               </div>
               
               <div className="glass-card grain p-10 ring-1 ring-accent/20 shadow-2xl">
-                <form className="space-y-6">
+                <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); alert('Message sent to satwikmani@example.com'); }}>
                   <div className="space-y-1">
                     <label className="text-[10px] font-black uppercase tracking-widest text-white/30 ml-2">Name</label>
                     <input 
+                      required
                       placeholder="Your name" 
                       className="w-full glass bg-white/5 px-6 py-5 rounded-2xl text-sm text-white placeholder:text-white/10 focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all ring-1 ring-white/5"
                     />
@@ -674,6 +760,8 @@ export default function Portfolio() {
                   <div className="space-y-1">
                     <label className="text-[10px] font-black uppercase tracking-widest text-white/30 ml-2">Email</label>
                     <input 
+                      required
+                      type="email"
                       placeholder="Your email" 
                       className="w-full glass bg-white/5 px-6 py-5 rounded-2xl text-sm text-white placeholder:text-white/10 focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all ring-1 ring-white/5"
                     />
@@ -681,12 +769,13 @@ export default function Portfolio() {
                   <div className="space-y-1">
                     <label className="text-[10px] font-black uppercase tracking-widest text-white/30 ml-2">Brief</label>
                     <textarea 
+                      required
                       placeholder="What are we building?" 
                       rows={4}
                       className="w-full glass bg-white/5 px-6 py-5 rounded-2xl text-sm text-white placeholder:text-white/10 focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all ring-1 ring-white/5 resize-none"
                     />
                   </div>
-                  <button className="w-full glass bg-accent/20 py-5 rounded-2xl text-xs font-black uppercase tracking-[0.3em] text-white hover:bg-accent/30 hover:shadow-[0_0_30px_rgba(255,68,0,0.2)] transition-all ring-1 ring-accent/50">
+                  <button type="submit" className="w-full glass bg-accent/20 py-5 rounded-2xl text-xs font-black uppercase tracking-[0.3em] text-white hover:bg-accent/30 hover:shadow-[0_0_30px_rgba(255,68,0,0.2)] transition-all ring-1 ring-accent/50">
                     Initiate Connection
                   </button>
                 </form>
@@ -707,9 +796,9 @@ export default function Portfolio() {
           </div>
           
           <div className="flex gap-12">
-            <a href="#" className="text-[11px] font-black uppercase tracking-[0.2em] text-white/20 hover:text-accent transition-all">GitHub</a>
-            <a href="#" className="text-[11px] font-black uppercase tracking-[0.2em] text-white/20 hover:text-accent transition-all">LinkedIn</a>
-            <a href="#" className="text-[11px] font-black uppercase tracking-[0.2em] text-white/20 hover:text-accent transition-all">Twitter</a>
+            <a href="https://github.com" target="_blank" className="text-[11px] font-black uppercase tracking-[0.2em] text-white/20 hover:text-accent transition-all">GitHub</a>
+            <a href="https://linkedin.com" target="_blank" className="text-[11px] font-black uppercase tracking-[0.2em] text-white/20 hover:text-accent transition-all">LinkedIn</a>
+            <a href="https://instagram.com" target="_blank" className="text-[11px] font-black uppercase tracking-[0.2em] text-white/20 hover:text-accent transition-all">Instagram</a>
           </div>
           
           <div className="text-[11px] font-black uppercase tracking-[0.5em] text-white/5">
