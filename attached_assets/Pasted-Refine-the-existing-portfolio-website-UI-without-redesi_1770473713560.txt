@@ -1,0 +1,112 @@
+Refine the existing portfolio website UI without redesigning the layout.
+Keep the dark premium Apple-level aesthetic, orange accent system, glass surfaces, and cinematic motion.
+Focus only on precision, clarity, hierarchy, and engagement.
+
+1. Typography Corrections
+
+Change the font of “Selected Work / Systems Built to Scale” to match the exact font used in “Engineering Systems” in the hero section.
+
+Ensure:
+
+identical font family
+
+identical weight
+
+identical letter-spacing
+
+perfectly even vertical spacing between each word.
+
+Remove any inconsistent opacity or blur from this headline.
+
+The headline must feel engineered, sharp, and premium, not decorative.
+
+2. Remove Blur & Improve Clarity
+
+Eliminate excessive background blur in the mid-section of the page.
+
+Glass panels should use:
+
+subtle backdrop blur only
+
+strong text contrast
+
+crisp edges.
+
+All text must remain fully readable at first glance.
+
+Avoid foggy or washed-out visuals.
+
+3. Make Lower Half Less Boring (Engagement Upgrade)
+
+Enhance the section from Selected Work → Footer with subtle cinematic motion:
+
+Add:
+
+slow ambient gradient drift in background
+
+faint floating particle noise reacting to scroll
+
+gentle parallax movement on oversized background text
+
+smooth scroll-linked fade transitions between sections
+
+soft orange glow highlights on hover for cards & buttons.
+
+Do NOT add flashy animations.
+Everything must remain calm, slow, and premium.
+
+4. Navbar Size & Presence
+
+Increase navbar height and padding slightly to feel more confident and high-end.
+
+Improve:
+
+spacing between nav items
+
+hover glow clarity
+
+glass depth and edge highlight.
+
+Keep it minimal, but make it feel intentional and substantial, not small.
+
+5. Footer Experience Upgrade
+
+Transform the footer into a memorable cinematic closing moment:
+
+Add:
+
+strong typography hierarchy
+
+subtle glow accents
+
+soft gradient lighting
+
+smooth fade-in when entering viewport
+
+calm, emotional closing tone.
+
+The footer should feel like a final signature, not just an ending.
+
+6. Interaction Quality Rules
+
+All motion must follow:
+
+slow, physics-based easing
+
+no sudden movement
+
+no flashy colors
+
+orange only for focus, hover, and active states
+
+maintain Apple-level restraint and polish.
+
+7. Final Goal
+
+The result should feel like:
+
+A calm, high-performance, cinematic engineering portfolio
+built with precision, clarity, and quiet confidence.
+
+No redesign.
+Only refinement to top-tier internship-ready quality.

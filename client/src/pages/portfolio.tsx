@@ -443,16 +443,15 @@ function Section({
   });
 
   const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
-  const y = useTransform(scrollYProgress, [0, 1], [100, 0]);
-  const blur = useTransform(scrollYProgress, [0, 1], ["20px", "0px"]);
+  const y = useTransform(scrollYProgress, [0, 1], [50, 0]);
 
   return (
     <motion.section
       id={id}
       ref={ref}
       data-testid={`section-${id}`}
-      style={{ opacity, y, filter: `blur(${blur.get()})` }}
-      className="glass-card grain group relative mx-auto w-full max-w-5xl px-8 py-12 sm:px-12 sm:py-20 mb-24"
+      style={{ opacity, y }}
+      className="glass-card grain group relative mx-auto w-full max-w-5xl px-8 py-16 sm:px-14 sm:py-24 mb-32 border border-white/10 ring-1 ring-white/5"
       transition={{
         duration: 1.2,
         ease: [0.16, 1, 0.3, 1],
@@ -461,18 +460,18 @@ function Section({
       <div className="relative z-10">
         <div
           data-testid={`text-eyebrow-${id}`}
-          className="mb-6 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.4em] text-accent"
+          className="mb-8 flex items-center gap-4 text-[11px] font-bold uppercase tracking-[0.5em] text-accent"
         >
-          <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(255,68,0,0.6)]" />
+          <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_12px_rgba(255,68,0,0.8)]" />
           <span>{eyebrow}</span>
         </div>
         <h2
           data-testid={`text-title-${id}`}
-          className="text-balance text-4xl font-black tracking-tighter text-white sm:text-5xl leading-none"
+          className="text-balance text-5xl font-black tracking-tighter text-white sm:text-6xl leading-[0.95]"
         >
           {title}
         </h2>
-        <div className="mt-10 text-[17px] leading-relaxed text-white/70 font-light tracking-wide">
+        <div className="mt-12 text-[18px] leading-relaxed text-white/80 font-light tracking-wide max-w-3xl">
           {children}
         </div>
       </div>
@@ -579,11 +578,11 @@ function SpotlightSection() {
       onMouseMove={handleMouseMove}
       className="py-48 relative flex flex-col items-center justify-center text-center overflow-hidden cursor-none"
     >
-      <motion.div style={{ y: yParallax }} className="pointer-events-none select-none opacity-10">
-        <h2 className="text-[12vw] font-black leading-[0.9] tracking-tighter text-white/20">
+      <motion.div style={{ y: yParallax }} className="pointer-events-none select-none">
+        <h2 className="text-[12vw] font-black leading-[0.85] tracking-tighter text-white/5 uppercase">
           SELECTED WORK
         </h2>
-        <h2 className="text-[10vw] font-black leading-[0.9] tracking-tighter text-white/20">
+        <h2 className="text-[10vw] font-black leading-[0.85] tracking-tighter text-white/5 uppercase">
           SYSTEMS BUILT TO SCALE
         </h2>
       </motion.div>
@@ -592,10 +591,10 @@ function SpotlightSection() {
         style={{ ...spotlightStyle, y: yParallax }}
         className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none select-none z-10"
       >
-        <h2 className="text-[12vw] font-black leading-[0.9] tracking-tighter text-white">
+        <h2 className="text-[12vw] font-black leading-[0.85] tracking-tighter text-white uppercase">
           SELECTED WORK
         </h2>
-        <h2 className="text-[10vw] font-black leading-[0.9] tracking-tighter text-accent">
+        <h2 className="text-[10vw] font-black leading-[0.85] tracking-tighter text-accent uppercase">
           SYSTEMS BUILT TO SCALE
         </h2>
       </motion.div>
@@ -666,18 +665,18 @@ export default function Portfolio() {
         )}
       </AnimatePresence>
 
-      <header className="fixed top-0 left-0 right-0 z-50 px-6 py-6 pointer-events-none">
-        <nav className="mx-auto max-w-6xl flex justify-between items-center pointer-events-auto">
-          <div className="glass px-4 py-2 rounded-full flex items-center gap-3 grain ring-1 ring-accent/20">
+      <header className="fixed top-0 left-0 right-0 z-50 px-8 py-8 pointer-events-none">
+        <nav className="mx-auto max-w-7xl flex justify-between items-center pointer-events-auto">
+          <div className="glass px-6 py-3 rounded-full flex items-center gap-4 grain ring-1 ring-white/20 shadow-xl backdrop-blur-md">
             <Sparkles className="h-4 w-4 text-accent" />
-            <span className="text-sm font-bold tracking-tight text-white">Satwik Mani Tripathi</span>
+            <span className="text-sm font-black tracking-tight text-white uppercase">Satwik Mani Tripathi</span>
           </div>
-          <div className="hidden sm:flex glass px-2 py-1.5 rounded-full items-center gap-1 grain ring-1 ring-accent/10">
+          <div className="hidden sm:flex glass px-3 py-2 rounded-full items-center gap-2 grain ring-1 ring-white/10 shadow-lg backdrop-blur-md">
             {["About", "Projects", "Journey", "Contact"].map((item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
-                className="px-4 py-1.5 text-[12px] font-bold uppercase tracking-wider text-white/50 hover:text-accent transition-colors rounded-full hover:bg-accent/5"
+                className="px-5 py-2 text-[11px] font-black uppercase tracking-widest text-white/40 hover:text-accent transition-all rounded-full hover:bg-accent/5 hover:shadow-[0_0_15px_rgba(255,68,0,0.2)]"
               >
                 {item}
               </a>
@@ -685,7 +684,7 @@ export default function Portfolio() {
           </div>
           <a
             href="#contact"
-            className="glass px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest text-white hover:text-accent hover:ring-accent/40 transition-all ring-1 ring-white/10"
+            className="glass px-8 py-3.5 rounded-full text-[11px] font-black uppercase tracking-[0.3em] text-white hover:text-accent hover:ring-accent/40 transition-all ring-1 ring-white/20 shadow-xl backdrop-blur-md hover:shadow-[0_0_20px_rgba(255,68,0,0.3)]"
           >
             Connect
           </a>
@@ -755,36 +754,38 @@ export default function Portfolio() {
           <SpotlightSection />
 
           <Section id="projects" eyebrow="The Output" title="Selected Artifacts" index={1}>
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-2">
               {projectsData.map((p) => (
                 <motion.article
                   key={p.id}
                   data-testid={`card-project-${p.id}`}
-                  className="glass-card grain group relative flex flex-col p-8 h-full ring-1 ring-white/5 hover:ring-accent/40 transition-all cursor-pointer"
+                  className="glass-card grain group relative flex flex-col p-12 h-full border border-white/5 hover:border-accent/40 transition-all cursor-pointer shadow-2xl"
                   onClick={() => setSelectedProjectId(p.id)}
                   whileHover={{ 
-                    y: -12,
-                    scale: 1.02,
+                    y: -15,
+                    scale: 1.01,
                     transition: { type: "spring", stiffness: 400, damping: 25 }
                   }}
                 >
                   <div className="relative z-10">
-                    <div className="flex justify-between items-start mb-6">
-                      <h3 className="text-xl font-bold tracking-tight text-white">{p.title}</h3>
-                      <ArrowUpRight className="h-5 w-5 text-white/20 group-hover:text-accent transition-colors" />
+                    <div className="flex justify-between items-start mb-10">
+                      <h3 className="text-2xl font-black tracking-tighter text-white uppercase">{p.title}</h3>
+                      <div className="glass p-3 rounded-full ring-1 ring-white/10 group-hover:ring-accent/50 group-hover:text-accent transition-all shadow-lg">
+                        <ArrowUpRight className="h-6 w-6" />
+                      </div>
                     </div>
-                    <p className="text-[15px] text-white/50 mb-8 leading-relaxed">
+                    <p className="text-[17px] text-white/60 mb-12 leading-relaxed font-light">
                       {p.description}
                     </p>
-                    <div className="mt-auto flex flex-wrap gap-3">
+                    <div className="mt-auto flex flex-wrap gap-4">
                       {p.tags.map((t) => (
-                        <span key={t} className="text-[10px] font-black uppercase tracking-[0.2em] text-accent/60">
+                        <span key={t} className="text-[10px] font-black uppercase tracking-[0.3em] text-accent/80 glass px-4 py-2 rounded-full border border-accent/20">
                           {t}
                         </span>
                       ))}
                     </div>
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-[2.5rem]" />
                 </motion.article>
               ))}
             </div>
