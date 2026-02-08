@@ -199,42 +199,44 @@ function CursorTrail() {
 
 function FloatingCube() {
   const { scrollYProgress } = useScroll();
-  const rotateX = useTransform(scrollYProgress, [0, 1], [0, 360]);
-  const rotateY = useTransform(scrollYProgress, [0, 1], [0, 720]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.7, 0.4, 0.1]);
+  const rotateX = useTransform(scrollYProgress, [0, 1], [20, 380]);
+  const rotateY = useTransform(scrollYProgress, [0, 1], [45, 765]);
+  const z = useTransform(scrollYProgress, [0, 1], [0, -200]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 0.4, 0.2]);
 
   return (
     <motion.div 
       className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10"
-      style={{ opacity }}
+      style={{ opacity, z }}
     >
       <motion.div
         style={{
-          width: 200,
-          height: 200,
+          width: 300,
+          height: 300,
           transformStyle: "preserve-3d",
           rotateX,
           rotateY,
         }}
       >
         {[
-          "translateZ(100px)",
-          "rotateY(180deg) translateZ(100px)",
-          "rotateY(90deg) translateZ(100px)",
-          "rotateY(-90deg) translateZ(100px)",
-          "rotateX(90deg) translateZ(100px)",
-          "rotateX(-90deg) translateZ(100px)",
+          "translateZ(150px)",
+          "rotateY(180deg) translateZ(150px)",
+          "rotateY(90deg) translateZ(150px)",
+          "rotateY(-90deg) translateZ(150px)",
+          "rotateX(90deg) translateZ(150px)",
+          "rotateX(-90deg) translateZ(150px)",
         ].map((transform, i) => (
           <div
             key={i}
-            className="absolute inset-0 border-[1.5px] border-accent/60 bg-accent/10 flex items-center justify-center overflow-hidden backdrop-blur-sm"
+            className="absolute inset-0 border-[2px] border-accent/40 bg-accent/5 flex items-center justify-center overflow-hidden backdrop-blur-md"
             style={{ 
               transform,
-              backgroundImage: "radial-gradient(circle, rgba(255,68,0,0.3) 1.5px, transparent 1.5px)",
-              backgroundSize: "20px 20px" 
+              backgroundImage: "radial-gradient(circle, rgba(255,68,0,0.4) 2px, transparent 2px)",
+              backgroundSize: "30px 30px" 
             }}
           >
-             <div className="w-1/2 h-1/2 bg-accent/20 blur-3xl rounded-full" />
+             <div className="w-2/3 h-2/3 bg-accent/30 blur-[100px] rounded-full" />
+             <div className="absolute inset-0 border-[0.5px] border-white/20" />
           </div>
         ))}
       </motion.div>
