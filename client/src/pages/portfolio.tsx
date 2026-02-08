@@ -198,45 +198,49 @@ function CursorTrail() {
 }
 
 function FloatingCube() {
-  const { scrollYProgress } = useScroll();
-  const rotateX = useTransform(scrollYProgress, [0, 1], [20, 380]);
-  const rotateY = useTransform(scrollYProgress, [0, 1], [45, 765]);
-  const z = useTransform(scrollYProgress, [0, 1], [0, -200]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 0.4, 0.2]);
+  const { scrollY } = useScroll();
+  const opacity = useTransform(scrollY, [0, 500, 1000], [0.7, 0.4, 0]);
 
   return (
     <motion.div 
       className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10"
-      style={{ opacity, z }}
+      style={{ opacity }}
     >
       <motion.div
+        animate={{
+          rotateY: [0, 360],
+          rotateX: [0, 360],
+          y: [-20, 20, -20],
+        }}
+        transition={{
+          duration: 15,
+          repeat: Infinity,
+          ease: "linear",
+        }}
         style={{
-          width: 300,
-          height: 300,
+          width: 200,
+          height: 200,
           transformStyle: "preserve-3d",
-          rotateX,
-          rotateY,
         }}
       >
         {[
-          "translateZ(150px)",
-          "rotateY(180deg) translateZ(150px)",
-          "rotateY(90deg) translateZ(150px)",
-          "rotateY(-90deg) translateZ(150px)",
-          "rotateX(90deg) translateZ(150px)",
-          "rotateX(-90deg) translateZ(150px)",
+          "translateZ(100px)",
+          "rotateY(180deg) translateZ(100px)",
+          "rotateY(90deg) translateZ(100px)",
+          "rotateY(-90deg) translateZ(100px)",
+          "rotateX(90deg) translateZ(100px)",
+          "rotateX(-90deg) translateZ(100px)",
         ].map((transform, i) => (
           <div
             key={i}
-            className="absolute inset-0 border-[2px] border-accent/40 bg-accent/5 flex items-center justify-center overflow-hidden backdrop-blur-md"
+            className="absolute inset-0 border-[1.5px] border-accent/60 bg-accent/10 flex items-center justify-center overflow-hidden"
             style={{ 
               transform,
-              backgroundImage: "radial-gradient(circle, rgba(255,68,0,0.4) 2px, transparent 2px)",
-              backgroundSize: "30px 30px" 
+              backgroundImage: "radial-gradient(circle, rgba(255,68,0,0.3) 1.5px, transparent 1.5px)",
+              backgroundSize: "20px 20px" 
             }}
           >
-             <div className="w-2/3 h-2/3 bg-accent/30 blur-[100px] rounded-full" />
-             <div className="absolute inset-0 border-[0.5px] border-white/20" />
+             <div className="w-1/2 h-1/2 bg-accent/20 blur-3xl rounded-full" />
           </div>
         ))}
       </motion.div>
@@ -435,14 +439,15 @@ function Section({
   });
 
   const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
-  const y = useTransform(scrollYProgress, [0, 1], [50, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], [30, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [0.98, 1]);
 
   return (
     <motion.section
       id={id}
       ref={ref}
       data-testid={`section-${id}`}
-      style={{ opacity, y }}
+      style={{ opacity, y, scale }}
       className="glass-card grain group relative mx-auto w-full max-w-5xl px-8 py-16 sm:px-14 sm:py-24 mb-32 border border-white/10 ring-1 ring-white/5"
       transition={{
         duration: 1.2,
@@ -454,7 +459,11 @@ function Section({
           data-testid={`text-eyebrow-${id}`}
           className="mb-8 flex items-center gap-4 text-[11px] font-bold uppercase tracking-[0.5em] text-accent"
         >
-          <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_12px_rgba(255,68,0,0.8)]" />
+          <motion.span 
+            animate={{ scale: [1, 1.2, 1], opacity: [0.8, 1, 0.8] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_12px_rgba(255,68,0,0.8)]" 
+          />
           <span>{eyebrow}</span>
         </div>
         <h2
