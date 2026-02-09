@@ -611,7 +611,7 @@ function SpotlightSection() {
   );
 }
 
-function Portfolio() {
+export default function Portfolio() {
   const reduceMotion = useReducedMotion();
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
 
