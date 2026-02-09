@@ -682,32 +682,41 @@ export default function Portfolio() {
         )}
       </AnimatePresence>
 
-      <header className="fixed top-0 left-0 right-0 z-50 px-10 py-10 pointer-events-none">
-        <nav className="mx-auto max-w-7xl flex justify-between items-center pointer-events-auto">
-          <div className="glass px-8 py-4 rounded-full flex items-center gap-5 grain ring-1 ring-white/30 shadow-2xl backdrop-blur-xl">
-            <div className="h-6 w-6 rounded-lg bg-gradient-to-br from-accent to-orange-700 flex items-center justify-center shadow-lg shadow-accent/20">
-              <Sparkles className="h-4 w-4 text-white" />
-            </div>
-            <span className="text-base font-black tracking-tighter text-white uppercase">Satwik Mani Tripathi</span>
+      <header className="fixed inset-x-0 top-0 z-[100] pointer-events-none">
+        <motion.nav
+          initial={false}
+          style={{
+            width: useTransform(scrollY, [0, 100], ["100%", "420px"]),
+            borderRadius: useTransform(scrollY, [0, 100], ["0px", "999px"]),
+            top: useTransform(scrollY, [0, 100], ["0px", "32px"]),
+            paddingLeft: useTransform(scrollY, [0, 100], ["40px", "24px"]),
+            paddingRight: useTransform(scrollY, [0, 100], ["40px", "20px"]),
+            paddingTop: useTransform(scrollY, [0, 100], ["24px", "10px"]),
+            paddingBottom: useTransform(scrollY, [0, 100], ["24px", "10px"]),
+          }}
+          className="fixed left-1/2 -translate-x-1/2 flex items-center justify-between glass backdrop-blur-3xl shadow-2xl overflow-hidden border-white/10 pointer-events-auto"
+        >
+          <div className="flex items-center gap-3">
+            <motion.div 
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="h-5 w-5 border-2 border-accent border-t-transparent rounded-full shadow-[0_0_10px_rgba(255,68,0,0.4)]" 
+            />
+            <span className="text-xs font-black tracking-tighter uppercase text-white whitespace-nowrap">Satwik Mani Tripathi</span>
           </div>
-          <div className="hidden sm:flex glass px-4 py-2.5 rounded-full items-center gap-3 grain ring-1 ring-white/10 shadow-xl backdrop-blur-xl">
-            {["About", "Projects", "Journey", "Contact"].map((item) => (
+          
+          <div className="flex items-center gap-1 ml-4">
+            {["Intro", "Projects", "Contact"].map((item) => (
               <a
                 key={item}
-                href={`#${item.toLowerCase()}`}
-                className="px-6 py-2.5 text-xs font-black uppercase tracking-[0.2em] text-white/40 hover:text-accent transition-all rounded-full hover:bg-accent/10 hover:shadow-[0_0_20px_rgba(255,68,0,0.3)]"
+                href={`#${item.toLowerCase() === "artifacts" ? "projects" : item.toLowerCase()}`}
+                className="px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white transition-all hover:bg-white/5 rounded-full"
               >
                 {item}
               </a>
             ))}
           </div>
-          <a
-            href="#contact"
-            className="glass px-10 py-4.5 rounded-full text-xs font-black uppercase tracking-[0.4em] text-white hover:text-accent hover:ring-accent/50 transition-all ring-1 ring-white/30 shadow-2xl backdrop-blur-xl hover:shadow-[0_0_30px_rgba(255,68,0,0.4)]"
-          >
-            Connect
-          </a>
-        </nav>
+        </motion.nav>
       </header>
 
       <main className="relative pt-32">
