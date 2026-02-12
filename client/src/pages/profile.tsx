@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ChevronLeft, Github, Instagram, Linkedin, Mail, Heart, Code, Coffee, Trophy } from "lucide-react";
 import { Link } from "wouter";
-import profileImg from "../attached_assets/PHOTO-2026-02-11-14-42-25_1770801297717.jpg";
+import profileImg from "/attached_assets/PHOTO-2026-02-11-14-42-25_1770801297717.jpg";
 
 export default function Profile() {
   const containerVariants = {
