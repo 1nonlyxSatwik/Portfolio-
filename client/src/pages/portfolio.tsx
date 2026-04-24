@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import Lenis from "lenis";
 import { Link, useLocation } from "wouter";
 import {
   type Transition,
@@ -99,7 +98,7 @@ function ProjectDetail({ id, onClose }: { id: string; onClose: () => void }) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="glass-card w-full max-w-5xl max-h-[90vh] overflow-y-auto p-8 sm:p-16 grain relative"
+        className="glass-card w-full max-w-5xl max-h-[90vh] overflow-y-auto p-8 sm:p-16 relative"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -111,7 +110,7 @@ function ProjectDetail({ id, onClose }: { id: string; onClose: () => void }) {
 
         <div className="max-w-4xl mx-auto">
           <div className="mb-12">
-            <div className="text-accent text-xs font-black uppercase tracking-[0.3em] mb-4">
+            <div className="text-accent text-[10px] font-mono font-black uppercase tracking-[0.3em] mb-4">
               System Analysis — {project.id}
             </div>
             <h1 className="text-5xl sm:text-7xl font-black text-white tracking-tighter mb-8 leading-none">
@@ -124,7 +123,7 @@ function ProjectDetail({ id, onClose }: { id: string; onClose: () => void }) {
 
           <div className="grid sm:grid-cols-2 gap-12 mb-16">
             <div className="space-y-6">
-              <h3 className="text-xs font-black uppercase tracking-widest text-white/30 border-b border-white/5 pb-2">Core Architecture</h3>
+              <h3 className="text-[10px] font-mono font-black uppercase tracking-widest text-white/30 border-b border-white/5 pb-2">Core Architecture</h3>
               <div className="flex flex-wrap gap-3">
                 {project.architecture.map((tech) => (
                   <span key={tech} className="glass px-4 py-2 rounded-full text-xs font-bold text-white/80">{tech}</span>
@@ -132,7 +131,7 @@ function ProjectDetail({ id, onClose }: { id: string; onClose: () => void }) {
               </div>
             </div>
             <div className="space-y-6">
-              <h3 className="text-xs font-black uppercase tracking-widest text-white/30 border-b border-white/5 pb-2">Engineering Metrics</h3>
+              <h3 className="text-[10px] font-mono font-black uppercase tracking-widest text-white/30 border-b border-white/5 pb-2">Engineering Metrics</h3>
               <div className="space-y-4">
                 {project.metrics.map((metric) => (
                   <div key={metric} className="flex items-center gap-3">
@@ -205,53 +204,47 @@ function CursorTrail() {
   );
 }
 
-function FloatingCube() {
+function LiquidGlassSplash() {
   const { scrollY } = useScroll();
-  const opacity = useTransform(scrollY, [0, 500, 1000], [0.7, 0.4, 0]);
+  const y = useTransform(scrollY, [0, 500], [0, 100]);
+  const opacity = useTransform(scrollY, [0, 500], [1, 0]);
 
   return (
     <motion.div 
-      className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10"
-      style={{ opacity }}
+      style={{ y, opacity }}
+      className="absolute top-[-10%] left-[-10%] w-[120%] h-[120%] pointer-events-none z-0 overflow-hidden"
     >
-      <motion.div
-        animate={{
-          rotateY: [0, 360],
-          rotateX: [0, 360],
-          y: [-20, 20, -20],
-        }}
-        transition={{
-          duration: 15,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-        style={{
-          width: 200,
-          height: 200,
-          transformStyle: "preserve-3d",
-        }}
-      >
-        {[
-          "translateZ(100px)",
-          "rotateY(180deg) translateZ(100px)",
-          "rotateY(90deg) translateZ(100px)",
-          "rotateY(-90deg) translateZ(100px)",
-          "rotateX(90deg) translateZ(100px)",
-          "rotateX(-90deg) translateZ(100px)",
-        ].map((transform, i) => (
-          <div
-            key={i}
-            className="absolute inset-0 border-[1.5px] border-accent/60 bg-accent/10 flex items-center justify-center overflow-hidden"
-            style={{ 
-              transform,
-              backgroundImage: "radial-gradient(circle, rgba(255,68,0,0.3) 1.5px, transparent 1.5px)",
-              backgroundSize: "20px 20px" 
-            }}
-          >
-             <div className="w-1/2 h-1/2 bg-accent/20 blur-3xl rounded-full" />
-          </div>
-        ))}
-      </motion.div>
+      <svg viewBox="0 0 1000 1000" className="w-full h-full opacity-40 blur-[80px]">
+        <motion.path
+          animate={{
+            d: [
+              "M200,500 Q300,200 500,200 T800,500 Q700,800 500,800 T200,500",
+              "M250,450 Q350,150 550,250 T750,450 Q650,750 450,750 T250,450",
+              "M200,500 Q300,200 500,200 T800,500 Q700,800 500,800 T200,500"
+            ]
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          fill="url(#glass-grad)"
+        />
+        <defs>
+          <linearGradient id="glass-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="rgba(232, 232, 227, 0.15)" />
+            <stop offset="50%" stopColor="rgba(232, 232, 227, 0.05)" />
+            <stop offset="100%" stopColor="rgba(189, 59, 27, 0.08)" />
+          </linearGradient>
+        </defs>
+      </svg>
+      {/* Floating glass orbs */}
+      <motion.div 
+        animate={{ y: [-20, 20, -20], x: [-10, 10, -10] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-[30%] right-[20%] w-64 h-64 rounded-full liquid-glass blur-3xl opacity-30"
+      />
+      <motion.div 
+        animate={{ y: [20, -20, 20], x: [10, -10, 10] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-[20%] left-[10%] w-96 h-96 rounded-full liquid-glass blur-[100px] opacity-20"
+      />
     </motion.div>
   );
 }
@@ -456,7 +449,7 @@ function Section({
       ref={ref}
       data-testid={`section-${id}`}
       style={{ opacity, y, scale }}
-      className="glass-card grain group relative mx-auto w-full max-w-5xl px-8 py-16 sm:px-14 sm:py-24 mb-32 border border-white/10 ring-1 ring-white/5"
+      className="glass-card group relative mx-auto w-full max-w-5xl px-8 py-16 sm:px-14 sm:py-24 mb-32 border border-white/10 ring-1 ring-white/5"
       transition={{
         duration: 1.2,
         ease: [0.16, 1, 0.3, 1],
@@ -465,7 +458,7 @@ function Section({
       <div className="relative z-10">
         <div
           data-testid={`text-eyebrow-${id}`}
-          className="mb-8 flex items-center gap-4 text-[11px] font-bold uppercase tracking-[0.5em] text-accent"
+          className="mb-8 flex items-center gap-4 text-[10px] font-mono font-bold uppercase tracking-[0.5em] text-accent"
         >
           <motion.span 
             animate={{ scale: [1, 1.2, 1], opacity: [0.8, 1, 0.8] }}
@@ -550,6 +543,46 @@ function ContactForm() {
   );
 }
 
+function InteractiveCoordinates() {
+  const [coords, setCoords] = useState({ n: 28.6139, e: 77.2090 });
+  
+  return (
+    <div className="relative group cursor-grab active:cursor-grabbing z-30">
+      <div className="absolute -inset-10 bg-accent/20 blur-3xl rounded-full opacity-30 group-hover:opacity-50 transition-opacity" />
+      <div className="w-48 h-48 rounded-full liquid-glass flex items-center justify-center border-accent/20 !overflow-visible pointer-events-auto">
+        <motion.div
+          drag
+          dragConstraints={{ left: -80, right: 80, top: -80, bottom: 80 }}
+          dragElastic={0.1}
+          dragSnapToOrigin
+          onDrag={(_, info) => {
+            setCoords({
+              n: 28.6139 + (info.offset.y / 1000),
+              e: 77.2090 + (info.offset.x / 1000)
+            });
+          }}
+          onDragEnd={() => setCoords({ n: 28.6139, e: 77.2090 })}
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.6, 1, 0.6]
+          }}
+          transition={{ 
+            duration: 3, 
+            repeat: Infinity, 
+            ease: "easeInOut" 
+          }}
+          className="h-6 w-6 rounded-full bg-accent shadow-[0_0_30px_rgba(255,68,0,0.8)] z-50 relative cursor-pointer"
+        />
+      </div>
+      <div className="absolute top-0 -right-12 flex flex-col gap-1 text-[10px] font-mono text-white/30 uppercase tracking-[0.2em] text-right pointer-events-none select-none">
+        <span className="text-white/60">{coords.n.toFixed(4)}° N</span>
+        <span className="text-white/60">{coords.e.toFixed(4)}° E</span>
+        <div className="h-px w-12 bg-white/20 mt-2 self-end" />
+      </div>
+    </div>
+  );
+}
+
 function SpotlightSection() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -588,10 +621,10 @@ function SpotlightSection() {
       className="py-48 relative flex flex-col items-center justify-center text-center overflow-hidden cursor-none"
     >
       <motion.div style={{ y: yParallax }} className="pointer-events-none select-none">
-        <h2 className="text-[12vw] font-black leading-[0.85] tracking-tighter text-white/5 uppercase">
+        <h2 className="text-[12vw] font-black leading-[0.85] tracking-tighter text-white/15 uppercase">
           SELECTED WORK
         </h2>
-        <h2 className="text-[10vw] font-black leading-[0.85] tracking-tighter text-white/5 uppercase">
+        <h2 className="text-[10vw] font-black leading-[0.85] tracking-tighter text-white/15 uppercase">
           SYSTEMS BUILT TO SCALE
         </h2>
       </motion.div>
@@ -613,16 +646,41 @@ function SpotlightSection() {
 
 function Navbar() {
   return (
-    <nav className="fixed top-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 p-1.5 glass rounded-full ring-1 ring-white/10 shadow-2xl pointer-events-auto">
-      {["Intro", "Projects", "Contact"].map((item) => (
-        <a
-          key={item}
-          href={`#${item.toLowerCase()}`}
-          className="px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white transition-colors rounded-full hover:bg-white/5"
-        >
-          {item}
-        </a>
-      ))}
+    <nav className="fixed top-8 left-0 right-0 z-50 px-6 pointer-events-none">
+      <div className="mx-auto max-w-5xl glass-nav-container pointer-events-auto">
+        {/* Left: Logo/Name */}
+        <div className="flex items-center gap-4 pl-4 pr-8 border-r border-white/10">
+          <div className="h-2 w-2 rounded-full bg-accent pulse-glow shadow-[0_0_12px_rgba(255,68,0,1)]" />
+          <span className="text-[10px] font-mono font-black uppercase tracking-[0.3em] text-white">
+            Satwik Mani Tripathi
+          </span>
+        </div>
+
+        {/* Center: Links */}
+        <div className="flex items-center gap-1 px-2">
+          {["Intro", "Work", "About", "Journey", "Contact"].map((item) => (
+            <a
+              key={item}
+              href={`#${item.toLowerCase() === "work" ? "projects" : item.toLowerCase()}`}
+              className="px-5 py-2 text-[9px] font-mono font-black uppercase tracking-[0.2em] text-white/40 hover:text-white hover:bg-white/5 rounded-full transition-all"
+            >
+              {item}
+            </a>
+          ))}
+        </div>
+
+        {/* Right: Action */}
+        <Link href="/profile">
+          <div className="glass-pill bg-accent/10 hover:bg-accent/20 border-accent/40 group relative overflow-hidden">
+            {/* Luminous glow */}
+            <div className="absolute inset-0 bg-accent/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+            <span className="text-[10px] font-mono font-black uppercase tracking-[0.2em] text-white group-hover:text-white transition-colors relative z-10">
+              Satwik.Design
+            </span>
+            <ArrowUpRight className="h-3.5 w-3.5 text-white/60 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all relative z-10" />
+          </div>
+        </Link>
+      </div>
     </nav>
   );
 }
@@ -638,30 +696,6 @@ export default function Portfolio() {
       document.body.style.overflow = 'unset';
     }
   }, [selectedProjectId]);
-
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: "vertical",
-      gestureOrientation: "vertical",
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-      infinite: false,
-    });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
 
   const journey: JourneyItem[] = [
     {
@@ -685,7 +719,7 @@ export default function Portfolio() {
   return (
     <div className="dark min-h-screen bg-transparent selection:bg-accent/40 selection:text-white">
       <AmbientGrid />
-      <FloatingCube />
+      <LiquidGlassSplash />
       <CursorTrail />
       {!reduceMotion && <CursorHighlight />}
 
@@ -700,20 +734,20 @@ export default function Portfolio() {
 
       <header className="fixed top-0 left-0 right-0 z-50 px-10 py-10 pointer-events-none">
         <nav className="mx-auto max-w-7xl flex justify-between items-center pointer-events-auto">
-          <div className="glass px-8 py-4 rounded-full flex items-center gap-5 grain ring-1 ring-white/30 shadow-2xl backdrop-blur-xl">
+          <div className="liquid-glass px-8 py-4 rounded-full flex items-center gap-5 ring-1 ring-white/30 shadow-2xl backdrop-blur-xl">
             <div className="h-6 w-6 rounded-lg bg-gradient-to-br from-accent to-orange-700 flex items-center justify-center shadow-lg shadow-accent/20">
               <Sparkles className="h-4 w-4 text-white" />
             </div>
             <Link href="/profile">
-              <span className="text-base font-black tracking-tighter text-white uppercase cursor-pointer hover:text-accent transition-colors">Satwik Mani Tripathi</span>
+              <span className="text-base font-mono font-black tracking-tighter text-white uppercase cursor-pointer hover:text-accent transition-colors">Satwik Mani Tripathi</span>
             </Link>
           </div>
-          <div className="hidden sm:flex glass px-4 py-2.5 rounded-full items-center gap-3 grain ring-1 ring-white/10 shadow-xl backdrop-blur-xl">
+          <div className="hidden sm:flex liquid-glass px-4 py-2.5 rounded-full items-center gap-3 ring-1 ring-white/10 shadow-xl backdrop-blur-xl">
             {["Intro", "Artifacts", "Journey", "Contact"].map((item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase() === "artifacts" ? "projects" : item.toLowerCase()}`}
-                className="px-6 py-2.5 text-xs font-black uppercase tracking-[0.2em] text-white/40 hover:text-accent transition-all rounded-full hover:bg-accent/10 hover:shadow-[0_0_20px_rgba(255,68,0,0.3)]"
+                className="px-6 py-2.5 text-[10px] font-mono font-black uppercase tracking-[0.2em] text-white/40 hover:text-accent transition-all rounded-full hover:bg-accent/10 hover:shadow-[0_0_20px_rgba(255,68,0,0.3)]"
               >
                 {item}
               </a>
@@ -731,56 +765,93 @@ export default function Portfolio() {
       <main className="relative pt-32">
         <section
           data-testid="section-hero"
-          className="relative mx-auto flex min-h-[70vh] max-w-6xl flex-col items-center justify-center px-6 text-center"
+          className="relative mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-8 pt-20"
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.5, ease: fadeEase }}
-            className="relative"
-          >
-            <div className="mb-10 inline-flex items-center gap-3 rounded-full glass grain px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-accent ring-1 ring-accent/30 shadow-[0_0_20px_rgba(255,68,0,0.1)]">
-              <span className="h-2 w-2 rounded-full bg-accent animate-pulse shadow-[0_0_10px_rgba(255,68,0,1)]" />
-              Newton School of Technology
+          <div className="grid lg:grid-cols-[1fr_400px] gap-20 items-end">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1.2, ease: fadeEase }}
+              className="relative z-10"
+            >
+              <div className="mb-12 inline-flex items-center gap-4 glass-pill bg-white/5 border-white/10">
+                <div className="flex gap-1.5">
+                  <div className="h-1 w-1 rounded-full bg-white/40" />
+                  <div className="h-1 w-1 rounded-full bg-accent pulse-glow" />
+                  <div className="h-1 w-1 rounded-full bg-white/40" />
+                </div>
+                <span className="text-[9px] font-mono font-bold uppercase tracking-[0.4em] text-white/60">
+                  Designer • <span className="text-white">Developer</span> • Problem Solver
+                </span>
+              </div>
+
+              <h1 className="hero-title text-[clamp(4rem,10vw,9rem)] text-white mb-4">
+                I DESIGN & <br />
+                ENGINEER <br />
+                <span className="text-accent italic font-medium tracking-tight">EXPERIENCES</span>
+              </h1>
+
+              <div className="mt-12 flex items-center gap-10">
+                <motion.a
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  href="#projects"
+                  className="glass-pill px-10 py-6 bg-white/5 border-white/10 flex flex-col items-start gap-1 group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-full bg-accent/20 group-hover:bg-accent transition-colors">
+                      <ArrowUpRight className="h-4 w-4 text-white" />
+                    </div>
+                    <span className="text-xs font-black uppercase tracking-widest text-white">View Work</span>
+                  </div>
+                  <span className="text-[9px] font-mono text-white/40 uppercase tracking-widest pl-11">Selected Projects</span>
+                </motion.a>
+
+                <div className="hidden md:block h-px w-20 bg-white/10" />
+
+                <div className="max-w-[280px]">
+                  <p className="text-sm text-white/50 leading-relaxed font-light">
+                    Where <span className="text-white">design meets code</span> and ideas turn into <span className="text-accent font-medium">impactful products</span>.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.5, delay: 0.4, ease: fadeEase }}
+              className="relative hidden lg:flex flex-col items-end gap-12 pb-20"
+            >
+              <InteractiveCoordinates />
+
+              <div className="flex flex-col items-end gap-4">
+                <div className="flex items-center gap-4 text-[9px] font-mono font-bold text-white/20 uppercase tracking-[0.4em]">
+                  <span>Scroll</span>
+                  <div className="h-px w-8 bg-white/10" />
+                  <span>To Explore</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="absolute bottom-12 left-8 right-8 flex justify-between items-center z-10">
+            <div className="flex items-center gap-4">
+              <div className="h-1.5 w-1.5 rounded-full bg-accent pulse-glow" />
+              <span className="text-[9px] font-mono font-bold uppercase tracking-[0.4em] text-white/40">
+                Available for New Opportunities
+              </span>
             </div>
-
-            <h1 className="text-balance text-6xl font-black tracking-tighter text-white sm:text-8xl lg:text-9xl mb-8">
-              I Build High-Performance <br />
-              <AnimatedRevealText text="Engineering Systems" />
-            </h1>
-
-            <p className="mx-auto mt-8 max-w-3xl text-balance text-xl font-light leading-relaxed text-white/60 sm:text-2xl tracking-wide">
-              I build <span className="text-white font-medium">fast, scalable web products</span> with 
-              calm design and production-grade engineering.
-            </p>
-
-            <div className="mt-16 flex flex-col items-center justify-center gap-6 sm:flex-row">
-              <motion.a
-                whileHover={{ scale: 1.05, y: -4, boxShadow: "0 20px 40px rgba(255, 68, 0, 0.2)" }}
-                whileTap={{ scale: 0.95 }}
-                href="https://github.com/yourusername"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="glass grain px-10 py-5 rounded-full text-sm font-black uppercase tracking-widest text-white ring-2 ring-accent/50 bg-accent/10 shadow-[0_0_30px_rgba(255, 68, 0, 0.1)] hover:bg-accent/20 transition-all"
-              >
-                View GitHub
-              </motion.a>
-              <a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-10 py-5 text-sm font-bold uppercase tracking-widest text-white/40 hover:text-accent transition-all"
-              >
-                Download Resume
-              </a>
-              <a
-                href="#contact"
-                className="px-10 py-5 text-sm font-bold uppercase tracking-widest text-white/40 hover:text-accent transition-all"
-              >
-                Contact Me
-              </a>
+            <div className="flex items-center gap-8">
+               <span className="text-[9px] font-mono text-white/20 uppercase tracking-[0.4em]">Follow Me</span>
+               <div className="flex gap-4">
+                 <Github className="h-4 w-4 text-white/40 hover:text-accent transition-colors" />
+                 <Linkedin className="h-4 w-4 text-white/40 hover:text-accent transition-colors" />
+                 <Instagram className="h-4 w-4 text-white/40 hover:text-accent transition-colors" />
+               </div>
             </div>
-          </motion.div>
+          </div>
         </section>
 
         <div className="mx-auto max-w-6xl px-6 pb-40">
@@ -806,7 +877,7 @@ export default function Portfolio() {
                 <motion.article
                   key={p.id}
                   data-testid={`card-project-${p.id}`}
-                  className="glass-card grain group relative flex flex-col p-12 h-full border border-white/5 cursor-pointer shadow-2xl overflow-visible"
+                  className="glass-card group relative flex flex-col p-12 h-full border border-white/5 cursor-pointer shadow-2xl overflow-visible"
                   onMouseMove={(e) => {
                     const rect = e.currentTarget.getBoundingClientRect();
                     const x = e.clientX - rect.left;
@@ -837,7 +908,7 @@ export default function Portfolio() {
                     </p>
                     <div className="mt-auto flex flex-wrap gap-4">
                       {p.tags.map((t) => (
-                        <span key={t} className="text-[10px] font-black uppercase tracking-[0.3em] text-accent/80 glass px-4 py-2 rounded-full border border-accent/20">
+                        <span key={t} className="text-[10px] font-mono font-black uppercase tracking-[0.3em] text-accent/80 glass px-4 py-2 rounded-full border border-accent/20">
                           {t}
                         </span>
                       ))}
@@ -852,17 +923,17 @@ export default function Portfolio() {
           <Section id="journey" eyebrow="The Path" title="Trajectory" index={2}>
             <div className="space-y-6">
               {journey.map((j) => (
-                <div key={j.id} className="glass-card grain p-10 flex flex-col sm:flex-row gap-8 items-start ring-1 ring-white/5 hover:ring-accent/20 transition-all">
+                <div key={j.id} className="glass-card p-10 flex flex-col sm:flex-row gap-8 items-start ring-1 ring-white/5 hover:ring-accent/20 transition-all">
                   <div className="flex-1">
                     <h3 className="text-xl font-bold text-white">{j.title}</h3>
-                    <div className="text-accent text-xs font-black uppercase tracking-[0.3em] mt-2">
+                    <div className="text-accent text-[10px] font-mono font-black uppercase tracking-[0.3em] mt-2">
                       {j.org}
                     </div>
                     <p className="mt-6 text-[15px] text-white/60 leading-relaxed max-w-3xl">
                       {j.description}
                     </p>
                   </div>
-                  <div className="text-[11px] font-mono text-white/30 font-bold uppercase pt-1 tracking-widest">
+                  <div className="text-[10px] font-mono text-white/30 font-bold uppercase pt-1 tracking-widest">
                     {j.period}
                   </div>
                 </div>
@@ -889,7 +960,7 @@ export default function Portfolio() {
                 </div>
               </div>
               
-              <div className="glass-card grain p-10 ring-1 ring-accent/20 shadow-2xl">
+              <div className="glass-card p-10 ring-1 ring-accent/20 shadow-2xl">
                 <ContactForm />
               </div>
             </div>
@@ -912,7 +983,7 @@ export default function Portfolio() {
                Let’s build something <br />
                <span className="text-accent italic">that matters.</span>
              </h2>
-             <p className="text-white/40 font-light tracking-[0.4em] uppercase text-xs">Based in NST • Available Globally</p>
+             <p className="text-white/40 font-mono font-light tracking-[0.4em] uppercase text-[10px]">Based in NST • Available Globally</p>
           </motion.div>
           
           <div className="flex flex-wrap justify-center gap-x-16 gap-y-8">

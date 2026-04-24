@@ -17,12 +17,16 @@ function Router() {
   );
 }
 
+import SmoothScroll from "@/components/SmoothScroll";
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        <Router />
+        <SmoothScroll>
+          <Router />
+        </SmoothScroll>
       </TooltipProvider>
     </QueryClientProvider>
   );

@@ -1,7 +1,7 @@
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { ChevronLeft, Github, Instagram, Linkedin, Mail, Heart, Code, Coffee, Trophy } from "lucide-react";
 import { Link } from "wouter";
-import profileImg from "/images/profile.jpg";
+import profileImg from "@/assets/images/satwik-profile.png";
 
 function AchievementCard() {
   return (
@@ -12,20 +12,20 @@ function AchievementCard() {
       transition={{ delay: 0.8, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       className="glass-card p-10 border-accent/10 bg-accent/[0.02] ring-1 ring-accent/5"
     >
-      <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-accent mb-8 flex items-center gap-2">
+      <h3 className="text-[10px] font-mono font-black uppercase tracking-[0.4em] text-accent mb-8 flex items-center gap-2">
         <Trophy className="h-3.5 w-3.5" /> Key Achievement
       </h3>
       <div className="space-y-6">
         <div className="flex flex-col gap-1">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-white/30">Championship</span>
+          <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-white/30">Championship</span>
           <span className="text-lg font-bold text-white tracking-tight">LAN Champion — Lucknow University</span>
         </div>
         <div className="flex flex-col gap-1 border-t border-white/5 pt-4">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-white/30">Competitive Level</span>
+          <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-white/30">Competitive Level</span>
           <span className="text-lg font-bold text-white tracking-tight">BGMI Tournament — Top 2 Finish</span>
         </div>
         <div className="flex flex-col gap-1 border-t border-white/5 pt-4">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-white/30">Financial Impact</span>
+          <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-white/30">Financial Impact</span>
           <span className="text-lg font-bold text-accent tracking-tight">Total Prize Pool Won — ₹2,00,000</span>
         </div>
       </div>
@@ -34,7 +34,7 @@ function AchievementCard() {
 }
 
 export default function Profile() {
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
@@ -45,7 +45,7 @@ export default function Profile() {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 12 },
     show: { 
       opacity: 1, 
@@ -121,7 +121,7 @@ export default function Profile() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                className="text-accent text-xs font-black uppercase tracking-[0.5em] flex items-center gap-4 mb-4"
+                className="text-accent text-[10px] font-mono font-black uppercase tracking-[0.5em] flex items-center gap-4 mb-4"
               >
                 <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,68,0,1)]" />
                 The Architect
@@ -158,7 +158,7 @@ export default function Profile() {
                 viewport={{ once: true }}
                 className="space-y-8"
               >
-                <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 border-b border-white/5 pb-3 flex items-center gap-2">
+                <h3 className="text-[10px] font-mono font-black uppercase tracking-[0.4em] text-white/20 border-b border-white/5 pb-3 flex items-center gap-2">
                   <Code className="h-3 w-3" /> Technical Interests
                 </h3>
                 <ul className="space-y-5 text-[14px] font-medium text-white/60">
@@ -177,7 +177,7 @@ export default function Profile() {
                 viewport={{ once: true }}
                 className="space-y-8"
               >
-                <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 border-b border-white/5 pb-3 flex items-center gap-2">
+                <h3 className="text-[10px] font-mono font-black uppercase tracking-[0.4em] text-white/20 border-b border-white/5 pb-3 flex items-center gap-2">
                   <Heart className="h-3 w-3" /> Personal Pursuits
                 </h3>
                 <ul className="space-y-5 text-[14px] font-medium text-white/60">
@@ -216,7 +216,7 @@ export default function Profile() {
                 </a>
               ))}
               <div className="h-px flex-1 bg-white/5" />
-              <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-white/10">
+              <div className="flex items-center gap-3 text-[10px] font-mono font-black uppercase tracking-widest text-white/10">
                 <Coffee className="h-3 w-3" /> Precision Artifact
               </div>
             </motion.div>

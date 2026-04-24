@@ -6,7 +6,7 @@ export default function NotFound() {
       data-testid="page-not-found"
       className="dark grid min-h-screen place-items-center bg-background text-foreground"
     >
-      <div className="glass-card grain glass-refraction relative w-[min(560px,92vw)] px-7 py-8">
+      <div className="liquid-glass relative w-[min(560px,92vw)] px-7 py-8">
         <div
           className="text-[12px] uppercase tracking-[0.22em] text-white/55"
           data-testid="text-404-eyebrow"
