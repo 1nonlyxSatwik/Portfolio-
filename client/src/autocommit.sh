@@ -1,0 +1,1 @@
+chmod +x autocommit.sh
