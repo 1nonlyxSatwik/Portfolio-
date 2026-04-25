@@ -93,4 +93,22 @@ app.use((req, res, next) => {
   httpServer.listen(port, "0.0.0.0", () => {
     log(`serving on http://localhost:${port}`);
   });
+
+  process.on("SIGTERM", () => {
+    log("SIGTERM received, closing server...");
+    httpServer.closeAllConnections();
+    httpServer.close(() => {
+      log("server closed");
+      process.exit(0);
+    });
+  });
+
+  process.on("SIGINT", () => {
+    log("SIGINT received, closing server...");
+    httpServer.closeAllConnections();
+    httpServer.close(() => {
+      log("server closed");
+      process.exit(0);
+    });
+  });
 })();
