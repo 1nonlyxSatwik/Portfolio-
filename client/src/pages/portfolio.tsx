@@ -11,6 +11,7 @@ import {
   useTransform,
   AnimatePresence,
 } from "framer-motion";
+import Spline from '@splinetool/react-spline';
 import {
   ArrowUpRight,
   Github,
@@ -204,47 +205,23 @@ function CursorTrail() {
   );
 }
 
-function LiquidGlassSplash() {
+function SplineBackground() {
   const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, 100]);
-  const opacity = useTransform(scrollY, [0, 500], [1, 0]);
+  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
+  const y = useTransform(scrollY, [0, 400], [0, 50]);
 
   return (
     <motion.div 
-      style={{ y, opacity }}
-      className="absolute top-[-10%] left-[-10%] w-[120%] h-[120%] pointer-events-none z-0 overflow-hidden"
+      style={{ opacity, y }}
+      className="absolute inset-0 z-0 pointer-events-none overflow-hidden"
     >
-      <svg viewBox="0 0 1000 1000" className="w-full h-full opacity-40 blur-[80px]">
-        <motion.path
-          animate={{
-            d: [
-              "M200,500 Q300,200 500,200 T800,500 Q700,800 500,800 T200,500",
-              "M250,450 Q350,150 550,250 T750,450 Q650,750 450,750 T250,450",
-              "M200,500 Q300,200 500,200 T800,500 Q700,800 500,800 T200,500"
-            ]
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          fill="url(#glass-grad)"
-        />
-        <defs>
-          <linearGradient id="glass-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="rgba(232, 232, 227, 0.15)" />
-            <stop offset="50%" stopColor="rgba(232, 232, 227, 0.05)" />
-            <stop offset="100%" stopColor="rgba(189, 59, 27, 0.08)" />
-          </linearGradient>
-        </defs>
-      </svg>
-      {/* Floating glass orbs */}
-      <motion.div 
-        animate={{ y: [-20, 20, -20], x: [-10, 10, -10] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-[30%] right-[20%] w-64 h-64 rounded-full liquid-glass blur-3xl opacity-30"
-      />
-      <motion.div 
-        animate={{ y: [20, -20, 20], x: [10, -10, 10] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-[20%] left-[10%] w-96 h-96 rounded-full liquid-glass blur-[100px] opacity-20"
-      />
+      {/* Center Darkness Mask */}
+      <div className="absolute inset-0 z-20 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,#050505_70%)]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background z-10" />
+      
+      <div className="w-full h-full scale-[1.1] origin-center opacity-70">
+        <Spline scene="/assets/land.splinecode" />
+      </div>
     </motion.div>
   );
 }
@@ -290,65 +267,29 @@ function RotatingCube() {
 
 function AmbientGrid() {
   const { scrollYProgress } = useScroll();
-  const yRange = useTransform(scrollYProgress, [0, 1], [0, -60]);
   const opacityRange = useTransform(scrollYProgress, [0, 0.5, 1], [0.4, 0.7, 0.4]);
   
-  const gridItems = useMemo(() => {
-    return Array.from({ length: 60 }).map((_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      duration: 15 + Math.random() * 25,
-      delay: Math.random() * -20,
-      size: 2 + Math.random() * 8,
-    }));
-  }, []);
-
   return (
     <motion.div 
       className="fixed inset-0 -z-20 pointer-events-none overflow-hidden bg-[#050505]"
       style={{ opacity: opacityRange }}
     >
       <motion.div 
-        className="absolute inset-0 w-full h-full opacity-30"
-        animate={{
-          background: [
-            "radial-gradient(circle at 50% 50%, rgba(255, 68, 0, 0.03) 0%, transparent 70%)",
-            "radial-gradient(circle at 40% 60%, rgba(255, 68, 0, 0.05) 0%, transparent 70%)",
-            "radial-gradient(circle at 60% 40%, rgba(255, 68, 0, 0.03) 0%, transparent 70%)",
-            "radial-gradient(circle at 50% 50%, rgba(255, 68, 0, 0.03) 0%, transparent 70%)",
-          ],
+        className="absolute inset-0 w-full h-full opacity-20"
+        style={{
+          background: "radial-gradient(circle at 50% 50%, rgba(189, 59, 27, 0.04) 0%, transparent 70%)",
         }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        animate={{
+          scale: [1, 1.2, 1],
+          x: [-20, 20, -20],
+          y: [-20, 20, -20],
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: "linear"
+        }}
       />
-      <motion.div 
-        className="absolute inset-0 w-full h-full"
-        style={{ y: yRange }}
-      >
-        {gridItems.map((item) => (
-          <motion.div
-            key={item.id}
-            className="absolute rounded-full bg-white/[0.05] ring-1 ring-white/[0.02] blur-[1px]"
-            style={{
-              left: `${item.x}%`,
-              top: `${item.y}%`,
-              width: item.size,
-              height: item.size,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              opacity: [0.03, 0.1, 0.03],
-            }}
-            transition={{
-              duration: item.duration,
-              delay: item.delay,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          />
-        ))}
-      </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/40 to-[#050505]" />
     </motion.div>
   );
 }
@@ -548,11 +489,11 @@ function InteractiveCoordinates() {
   
   return (
     <div className="relative group cursor-grab active:cursor-grabbing z-30">
-      <div className="absolute -inset-10 bg-accent/20 blur-3xl rounded-full opacity-30 group-hover:opacity-50 transition-opacity" />
-      <div className="w-48 h-48 rounded-full liquid-glass flex items-center justify-center border-accent/20 !overflow-visible pointer-events-auto">
+      <div className="absolute -inset-10 bg-accent/5 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+      <div className="w-40 h-40 rounded-full glass-card flex items-center justify-center border-white/5 !overflow-visible pointer-events-auto bg-black/20">
         <motion.div
           drag
-          dragConstraints={{ left: -80, right: 80, top: -80, bottom: 80 }}
+          dragConstraints={{ left: -60, right: 60, top: -60, bottom: 60 }}
           dragElastic={0.1}
           dragSnapToOrigin
           onDrag={(_, info) => {
@@ -563,21 +504,21 @@ function InteractiveCoordinates() {
           }}
           onDragEnd={() => setCoords({ n: 28.6139, e: 77.2090 })}
           animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.6, 1, 0.6]
+            scale: [1, 1.1, 1],
+            opacity: [0.3, 0.6, 0.3]
           }}
           transition={{ 
-            duration: 3, 
+            duration: 4, 
             repeat: Infinity, 
             ease: "easeInOut" 
           }}
-          className="h-6 w-6 rounded-full bg-accent shadow-[0_0_30px_rgba(255,68,0,0.8)] z-50 relative cursor-pointer"
+          className="h-4 w-4 rounded-full bg-accent shadow-[0_0_20px_rgba(189,59,27,0.4)] z-50 relative cursor-pointer"
         />
       </div>
-      <div className="absolute top-0 -right-12 flex flex-col gap-1 text-[10px] font-mono text-white/30 uppercase tracking-[0.2em] text-right pointer-events-none select-none">
-        <span className="text-white/60">{coords.n.toFixed(4)}° N</span>
-        <span className="text-white/60">{coords.e.toFixed(4)}° E</span>
-        <div className="h-px w-12 bg-white/20 mt-2 self-end" />
+      <div className="absolute top-0 -right-12 flex flex-col gap-1 text-[9px] font-mono text-white/20 uppercase tracking-[0.2em] text-right pointer-events-none select-none">
+        <span>{coords.n.toFixed(4)}° N</span>
+        <span>{coords.e.toFixed(4)}° E</span>
+        <div className="h-px w-8 bg-white/10 mt-2 self-end" />
       </div>
     </div>
   );
@@ -645,42 +586,66 @@ function SpotlightSection() {
 }
 
 function Navbar() {
+  const { scrollY } = useScroll();
+  const isScrolled = useMotionValue(0);
+  
+  // Create a spring for smooth morphing
+  const springConfig = { damping: 20, stiffness: 100 };
+  const width = useSpring(useTransform(scrollY, [0, 100], ["100%", "auto"]), springConfig);
+  const opacityIntro = useTransform(scrollY, [0, 50], [1, 0]);
+  const scale = useTransform(scrollY, [0, 100], [1, 0.9]);
+  
   return (
-    <nav className="fixed top-8 left-0 right-0 z-50 px-6 pointer-events-none">
-      <div className="mx-auto max-w-5xl glass-nav-container pointer-events-auto">
-        {/* Left: Logo/Name */}
-        <div className="flex items-center gap-4 pl-4 pr-8 border-r border-white/10">
-          <div className="h-2 w-2 rounded-full bg-accent pulse-glow shadow-[0_0_12px_rgba(255,68,0,1)]" />
-          <span className="text-[10px] font-mono font-black uppercase tracking-[0.3em] text-white">
-            Satwik Mani Tripathi
-          </span>
-        </div>
-
-        {/* Center: Links */}
-        <div className="flex items-center gap-1 px-2">
-          {["Intro", "Work", "About", "Journey", "Contact"].map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase() === "work" ? "projects" : item.toLowerCase()}`}
-              className="px-5 py-2 text-[9px] font-mono font-black uppercase tracking-[0.2em] text-white/40 hover:text-white hover:bg-white/5 rounded-full transition-all"
-            >
-              {item}
-            </a>
-          ))}
-        </div>
-
-        {/* Right: Action */}
-        <Link href="/profile">
-          <div className="glass-pill bg-accent/10 hover:bg-accent/20 border-accent/40 group relative overflow-hidden">
-            {/* Luminous glow */}
-            <div className="absolute inset-0 bg-accent/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-            <span className="text-[10px] font-mono font-black uppercase tracking-[0.2em] text-white group-hover:text-white transition-colors relative z-10">
-              Satwik.Design
+    <nav className="fixed top-6 left-0 right-0 z-50 px-6 pointer-events-none">
+      <motion.div 
+        style={{ scale }}
+        className="mx-auto max-w-5xl flex justify-center"
+      >
+        <motion.div 
+          className="glass-nav-container pointer-events-auto flex items-center gap-2 overflow-hidden"
+          layout
+        >
+          {/* State 1 Left: Name (Fades on scroll) */}
+          <motion.div 
+            style={{ opacity: opacityIntro }}
+            className="flex items-center gap-4 pl-4 pr-6 border-r border-white/10"
+          >
+            <div className="h-2 w-2 rounded-full bg-accent shadow-[0_0_12px_rgba(189,59,27,1)]" />
+            <span className="text-[10px] font-mono font-black uppercase tracking-[0.3em] text-white whitespace-nowrap">
+              Satwik
             </span>
-            <ArrowUpRight className="h-3.5 w-3.5 text-white/60 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all relative z-10" />
+          </motion.div>
+
+          {/* Links: Transitions from full list to compressed dots */}
+          <div className="flex items-center gap-1 px-2">
+            <AnimatePresence mode="wait">
+              {["Intro", "Work", "About", "Journey", "Contact"].map((item, i) => (
+                <motion.a
+                  key={item}
+                  href={`#${item.toLowerCase() === "work" ? "projects" : item.toLowerCase()}`}
+                  initial={{ opacity: 1 }}
+                  style={{ 
+                    display: (item === "Intro" || item === "Journey") ? (useTransform(scrollY, [0, 50], ["block", "none"]) as any) : "block"
+                  }}
+                  className="px-4 py-2 text-[10px] font-mono font-black uppercase tracking-[0.2em] text-white/50 hover:text-white transition-all whitespace-nowrap"
+                >
+                  {item}
+                </motion.a>
+              ))}
+            </AnimatePresence>
           </div>
-        </Link>
-      </div>
+
+          {/* Right: Action (Shrinks on scroll) */}
+          <Link href="/profile">
+            <motion.div 
+              style={{ opacity: opacityIntro }}
+              className="glass-pill bg-white/5 hover:bg-white/10 border-white/10 group h-8 px-4"
+            >
+              <ArrowUpRight className="h-3.5 w-3.5 text-white/40 group-hover:text-white transition-all" />
+            </motion.div>
+          </Link>
+        </motion.div>
+      </motion.div>
     </nav>
   );
 }
@@ -719,7 +684,7 @@ export default function Portfolio() {
   return (
     <div className="dark min-h-screen bg-transparent selection:bg-accent/40 selection:text-white">
       <AmbientGrid />
-      <LiquidGlassSplash />
+      <SplineBackground />
       <CursorTrail />
       {!reduceMotion && <CursorHighlight />}
 
@@ -767,24 +732,13 @@ export default function Portfolio() {
           data-testid="section-hero"
           className="relative mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-8 pt-20"
         >
-          <div className="grid lg:grid-cols-[1fr_400px] gap-20 items-end">
+          <div className="flex flex-col items-start gap-20">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1.2, ease: fadeEase }}
               className="relative z-10"
             >
-              <div className="mb-12 inline-flex items-center gap-4 glass-pill bg-white/5 border-white/10">
-                <div className="flex gap-1.5">
-                  <div className="h-1 w-1 rounded-full bg-white/40" />
-                  <div className="h-1 w-1 rounded-full bg-accent pulse-glow" />
-                  <div className="h-1 w-1 rounded-full bg-white/40" />
-                </div>
-                <span className="text-[9px] font-mono font-bold uppercase tracking-[0.4em] text-white/60">
-                  Designer • <span className="text-white">Developer</span> • Problem Solver
-                </span>
-              </div>
-
               <h1 className="hero-title text-[clamp(4rem,10vw,9rem)] text-white mb-4">
                 I DESIGN & <br />
                 ENGINEER <br />
@@ -813,23 +767,6 @@ export default function Portfolio() {
                   <p className="text-sm text-white/50 leading-relaxed font-light">
                     Where <span className="text-white">design meets code</span> and ideas turn into <span className="text-accent font-medium">impactful products</span>.
                   </p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.5, delay: 0.4, ease: fadeEase }}
-              className="relative hidden lg:flex flex-col items-end gap-12 pb-20"
-            >
-              <InteractiveCoordinates />
-
-              <div className="flex flex-col items-end gap-4">
-                <div className="flex items-center gap-4 text-[9px] font-mono font-bold text-white/20 uppercase tracking-[0.4em]">
-                  <span>Scroll</span>
-                  <div className="h-px w-8 bg-white/10" />
-                  <span>To Explore</span>
                 </div>
               </div>
             </motion.div>
